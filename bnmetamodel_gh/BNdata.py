@@ -55,30 +55,6 @@ class BNdata:
 
         self.binnedDict, self.binnedData, self.bincountsDict = datadf, datadict, bincountsdict
 
-    def loadFromCSV (self, header=False):
-        # TODO #42: Refactor loadFromCSV to include k-fold code
-        # (see also #43: Sort out the doubling up of the loadDataFromCSV function)
-        dataset = []
-        with open(self.file, 'rb') as csvfile:
-            lines = csv.reader(csvfile)
-
-            for row in lines:
-                dataset.append(row)
-        data = []
-        if (header == True): data.append(dataset[0])
-        for i in range(0, len(dataset)):
-            row = []
-            for j in range(0, len(dataset[i])):
-                if i == 0:
-                    row.append(dataset[i][j])
-                else:
-                    item = float(dataset[i][j])
-                    row.append(item)
-            data.append(row)
-        self.data = data
-
-        return data
-
     def getBinRanges (self, binTypeDict, numBinsDict):
         trainingDfDiscterizedRanges = []
         trainingDfDiscterizedRangesDict = {}
