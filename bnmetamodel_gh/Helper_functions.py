@@ -55,7 +55,7 @@ def len_csvdata(csv_file_path):
 
 
 def loadDataFromCSV (csv_file_path, header=False):
-    #TODO: should rewrite this function as loaddataset_kfold and write the kfold code in here and return list of lists of indexes
+    #TODO: should rewrite this function as loaddataset_kfold and write the kfold code in here and return list of lists of indexes # Issue #7 --> extract to separate issue
     dataset = []
     with open(csv_file_path, 'rb') as csvfile:
         lines = csv.reader(csvfile)
@@ -157,7 +157,7 @@ def draw_histograms(df, binwidths, n_rows, n_cols, maintitle, xlabel, ylabel, di
     t = fig.suptitle(maintitle, fontsize=4)
     # t.set_poition(0.5, 1.05)
 
-    #TODO: df needs to be replaced with probabilities or write bar function that returns bar ax bar(probs, x)
+    #TODO: df needs to be replaced with probabilities or write bar function that returns bar ax bar(probs, x) # Issue #7 --> extract to separate issue
 
     i = 0
     for var_name in list(df):
@@ -527,7 +527,7 @@ def condprobve2(self, query, evidence):
     return self.factorlist
 
 
-def inferPosteriorDistribution(queries, evidence, baynet):  # TODO: extend to handle multiple query nodes
+def inferPosteriorDistribution(queries, evidence, baynet):  # TODO: extend to handle multiple query nodes # Issue #7 --> extract to separate issue
     fn = TableCPDFactorization(baynet)
 
     result = condprobve2(fn, queries, evidence)  # written here
@@ -538,7 +538,7 @@ def inferPosteriorDistribution(queries, evidence, baynet):  # TODO: extend to ha
     return probabilities
 
 
-def laplacesmooth(bn): # TODO: update this function as per code written in condprobve or lmeestimateparams
+def laplacesmooth(bn): # TODO: update this function as per code written in condprobve or lmeestimateparams # Issue #7 --> extract to separate issue
     for vertex in bn.V:
         print 'vertex ', vertex
         numBins = bn.Vdata[vertex]['numoutcomes']
@@ -646,8 +646,7 @@ def getBinRanges (dataframe, binTypeDict, numBinsDict):
 
     # loop through variables in trainingDf (columns) to discretize into ranges according to trainingDf
 
-    # TODO: the names should be taken from an origina list of BN nodes not assuming all vars in df. THis will allow to use one dtaframe, such that we can
-    # TODO: ... build a bn on any of the columns selected from the csv file.
+    # TODO: the names should be taken from an original list of BN nodes not assuming all vars in df. THis will allow to use one dataframe, such that we can build a bn on any of the columns selected from the csv file.  # Issue #7 --> extract to separate issue
     for varName in binTypeDict.keys():
         if binTypeDict[varName] == 'p':
             trainingDfDiscterizedRanges.append(percentile_bins(dataframe[varName], numBinsDict.get(varName)))  # adds to a list
@@ -656,7 +655,7 @@ def getBinRanges (dataframe, binTypeDict, numBinsDict):
             trainingDfDiscterizedRanges.append(bins(max(dataframe[varName]), min(dataframe[varName]),numBinsDict.get(varName)))  # adds to a list
             trainingDfDiscterizedRangesDict[varName] = bins(max(dataframe[varName]), min(dataframe[varName]),numBinsDict.get(varName))  # adds to a dictionary
 
-        # TODO: add other option: elif 'auto(mlp)':
+        # TODO: add other option: elif 'auto(mlp)':  # Issue #7 --> extract to separate issue
 
     return trainingDfDiscterizedRangesDict
 
@@ -680,7 +679,7 @@ def generateErrors (predictedTargetPosteriors, testingData, binnedTestingData, b
 
 
 def BNskelFromCSV (csvdata, targets):
-    # TODO: must know how to swap direction of too many inputs into a node
+    # TODO: must know how to swap direction of too many inputs into a node  # Issue #7 --> extract to separate issue
 
     ######## EXTRACT HEADER STRINGS FROM CSV FILE ########
     skel = GraphSkeleton()

@@ -251,7 +251,7 @@ def disc2(csv_data, data, alldata, numBins, minmax):
 
             index = all_key_strings.index(key)
 
-            # TODO change hard coded max_def to output via constructor
+            # TODO change hard coded max_def to output via constructor  # Issue #7 --> extract to separate issue
             if key == 'max_def':
                 # using equal distance discretisation
                 bin_ranges = bins(max, min, numBins)
