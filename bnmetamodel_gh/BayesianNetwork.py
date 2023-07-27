@@ -48,7 +48,7 @@ class BayesianNetwork:
             # learn bayesian network
             print 'building bayesian network ...'
             baynet = discrete_mle_estimateparams2(self.skel, BNdata.binnedDict)  # using discrete_mle_estimateparams2 written as function in this file, not calling from libpgm
-            # TODO: baynet might be redundant since we are building a junction tree. # Issue #7 --> extract to separate issue
+            # TODO #36: Baynet might be redundant since we are building a junction tree
 
             print 'this is what the libpgm algorithm spits out all data ', self.skel.alldata
 
@@ -200,7 +200,7 @@ class BayesianNetwork:
                 assembledPosteriors.append(assembledPosterior)
                 postInferencePDs.update({queryVarName: assembledP[i]['probability'].tolist()})
 
-        #TODO: here need to update BN PDS and set them as priors for infernece with the next evidence variable # Issue #7 --> extract to separate issue
+        # TODO #37: Update BN PDS and set them as priors for inference with the next evidence variable
 
         # for visualising evidence PDs
         for evidenceVarName in evidence.keys():
@@ -474,7 +474,7 @@ class BayesianNetwork:
                     else:
                         ax.bar(xticksv, kwargs['posteriorPD'][varName], align='center', width=binwidths, color='red', alpha=0.2, linewidth=0.2)
 
-            # TODO: fix xticks .... not plotting all # Issue #7 --> extract to separate issue
+            # TODO #38: Fix xticks in rendering posteriors
             # plt.xlim(edge[0], max(edge))
             plt.xticks([round(e, 4) for e in edge], rotation='vertical')
             plt.ylim(0, 1)
@@ -547,7 +547,7 @@ class BayesianNetwork:
                 marginalTargetPosteriorsDict[target] = []
 
             # In this loop we predict the posterior distributions for each queried target
-            # TODO: need to adapt this loop for storing predicted posteriors for each target in the list, and eventually calc error_df for each Target (or into one DF with multiple indices) # Issue #7 --> extract to separate issue
+            # TODO #39: Adapt loops for storing predicted posteriors
 
             for i in range (0,binnedTestingData.shape[0]):
                 row = binnedTestingDict[i]
@@ -641,7 +641,7 @@ class BayesianNetwork:
                 marginalTargetPosteriorsDict[target] = []
 
             # In this loop we predict the posterior distributions for each queried target
-            # TODO: need to adapt this loop for storing predicted posteriors for each target in the list, and eventually calc error_df for each Target (or into one DF with multiple indices) # Issue #7 --> extract to separate issue
+            # TODO #39: Adapt loops for storing predicted posteriors
 
             for i in range(0, binnedTestingData.shape[0]):
                 row = binnedTestingDict[i]
@@ -716,7 +716,7 @@ class BayesianNetwork:
             marginalTargetPosteriorsDict[target] = []
 
         # In this loop we predict the posterior distributions for each queried target
-        # TODO: need to adapt this loop for storing predicted posteriors for each target in the list, and eventually calc error_df for each Target (or into one DF with multiple indices) # Issue #7 --> extract to separate issue
+        # TODO #39: Adapt loops for storing predicted posteriors
         for i in range (0,binnedTestingData.shape[0]):
             row = binnedTestingDict[i]
             evidence = without_keys(row, queries.keys())
@@ -828,7 +828,7 @@ class BayesianNetwork:
         return posteriorsDict
 
     def inferPD_JT_soft (self, softEvidence ): # method to perform inference with soft evidence (virtual) using join tree only
-        # TODO: currently you can only enter likelihoods. Need to find way to enter probabilities and convert them to likelihoods. # Issue #7 --> extract to separate issue
+        # TODO #40: Find way to enter probabilities and convert them to likelihoods in inferPD_JT_soft
 
         print 'performing inference using junction tree algorithm ...'
 

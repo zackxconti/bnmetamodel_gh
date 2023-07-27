@@ -3,7 +3,7 @@ import pandas as pd
 from Helper_functions import getBinRanges, discretize
 import copy
 
-#TODO: implement MDRM Sensitivity analysis as class and then write a 'dimension reduction' wrapper function in BNdata - enables to reduce number of BN input variables # Issue #7 --> extract to separate issue
+# TODO #41: Implement MDRM Sensitivity analysis as class
 
 class BNdata:
 
@@ -56,7 +56,8 @@ class BNdata:
         self.binnedDict, self.binnedData, self.bincountsDict = datadf, datadict, bincountsdict
 
     def loadFromCSV (self, header=False):
-        # TODO: should rewrite this function as loaddataset_kfold and write the kfold code in here and return list of lists of indexes # Issue #7 --> extract to separate issue
+        # TODO #42: Refactor loadFromCSV to include k-fold code
+        # (see also #43: Sort out the doubling up of the loadDataFromCSV function)
         dataset = []
         with open(self.file, 'rb') as csvfile:
             lines = csv.reader(csvfile)
