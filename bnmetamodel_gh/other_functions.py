@@ -205,12 +205,6 @@ def whichBin (values_list, ranges_list, indexOnly = False):
     if indexOnly == True : return bin_index_list
     else: return binned_list
 
-def binstovals(bin_ranges):
-    # for i in range (0, bin_ranges):
-
-    # print output_bins
-    return
-
 def disc2(csv_data, data, alldata, numBins, minmax):
     assert (isinstance(data, list) and data and isinstance(data[0], dict)), "Arg must be a list of dicts."
     cdata = copy.deepcopy(data)
