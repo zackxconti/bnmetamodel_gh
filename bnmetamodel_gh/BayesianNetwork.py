@@ -73,6 +73,7 @@ class BayesianNetwork:
         print "building junction tree is complete"
 
     def generate(self):  # need to modify to accept skel or skelfile
+        # TODO: Marked for #23: not used internally in package
         baynet = discrete_mle_estimateparams2(self.skel, self.binnedData)  # using discrete_mle_estimateparams2 written as function in this file, not calling from libpgm
 
         self.nodes = baynet.V
@@ -82,6 +83,7 @@ class BayesianNetwork:
         return baynet
 
     def getpriors (self):
+        # TODO: Marked for #23: not used internally in package
         priorPDs = {}
 
         bincounts = self.BNdata.bincountsDict
@@ -139,6 +141,7 @@ class BayesianNetwork:
         return queriedMarginalPosteriors, postInferencePDs
 
     def inferPD_2(self, query, evidence, plot=False): # this function will allow inference with soft evidence
+        # TODO: Marked for #23: not used internally in package
         # evidence is provided in the form of a dict { 'x1': [0.2, 0.1, 0.4, 0.0, 0.3], 'x2': [1.0, 0.0, 0.0, 0.0, 0.0], ...}
 
         for varName in evidence.keys(): #for each evidence variable
@@ -315,6 +318,7 @@ class BayesianNetwork:
         return assembledP, postInferencePDs
 
     def inferPD_4(self, query, evidence, plot=False): # this method performs inference with soft evidence using shaowei's method with join tree
+        # TODO: Marked for #23: not used internally in package
         # evidence is provided in the form of a dict { 'x1': [0.2, 0.1, 0.4, 0.0, 0.3], 'x2': [1.0, 0.0, 0.0, 0.0, 0.0], ...}
 
         ######## GENERATE SEQUENCE DICTIONARY : ALL POSSIBLE COMBINATIONS OF STATES FROM EACH EVIDENCE VARIABLES #######
@@ -500,6 +504,7 @@ class BayesianNetwork:
         if displayplt == True: plt.show()
 
     def crossValidate (self, targetList, numFolds):  # returns a list of error dataframes, one for each target
+        # TODO: Marked for #23: not used internally in package
         #perhaps use **kwargs, to ask if data not specified, then use self.binnedData
 
         error_dict = {}
@@ -585,6 +590,7 @@ class BayesianNetwork:
         return error_dict
 
     def crossValidate_JT(self, targetList, numFolds):  # returns a list of error dataframes, one for each target
+        # TODO: Marked for #23: not used internally in package
         # perhaps use **kwargs, to ask if data not specified, then use self.binnedData
 
         error_dict = {}
@@ -679,6 +685,7 @@ class BayesianNetwork:
         return error_dict
 
     def validateNew (self, newBNData, targetList):  # returns a list of error dataframes, one for each target
+        # TODO: Marked for #23: not used internally in package
         # perhaps use **kwargs, to ask if data not specified, then use self.binnedData
 
         error_dict = {}

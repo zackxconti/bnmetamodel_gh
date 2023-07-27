@@ -27,6 +27,7 @@ import networkx as nx
 
 
 def discrete_estimatebn( learner, data, skel, pvalparam=.05, indegree=0.5):
+    # TODO: Marked for #23: not used internally in package
     assert (isinstance(data, list) and data and isinstance(data[0], dict)), "Arg must be a list of dicts."
 
     # learn parameters
@@ -36,12 +37,14 @@ def discrete_estimatebn( learner, data, skel, pvalparam=.05, indegree=0.5):
 
 
 def alphanum_key(s):
+    # TODO: Marked for #23: not used internally in package
     key = re.split(r"(\d+)", s)
     key[1::2] = map(int, key[1::2])
     return key
 
 
 def len_csvdata(csv_file_path):
+    # TODO: Marked for #23: not used internally in package
     data = []
     with io.open(csv_file_path, 'rb') as f:
         reader = csv.reader(f, dialect=csv.excel)
@@ -80,6 +83,7 @@ def loadDataFromCSV (csv_file_path, header=False):
 
 
 def ranges(data):
+    # TODO: Marked for #23: not used internally in package
     assert (isinstance(data, list) and data and isinstance(data[0], dict)), "Arg must be a list of dicts."
 
     cdata = copy.deepcopy(data)
@@ -129,6 +133,7 @@ def percentile_bins(array, numBins):
 
 
 def draw_barchartpd(binranges, probabilities):
+    # TODO: Marked for #23: not used internally in package
     xticksv = []
     widths = []
     edge = []
@@ -154,6 +159,8 @@ def draw_barchartpd(binranges, probabilities):
 
 
 def draw_histograms(df, binwidths, n_rows, n_cols, maintitle, xlabel, ylabel, displayplt = False, saveplt =False ,**kwargs ):
+    # TODO: Marked for #23: not used internally in package
+
     fig=plt.figure(figsize=((750*n_cols)/220, (750*n_rows)/220  ), dpi=220)
     t = fig.suptitle(maintitle, fontsize=4)
     # t.set_poition(0.5, 1.05)
@@ -205,6 +212,7 @@ def printdist(jd, bn, normalize=True):
 
 
 def kfoldToList (indexList, csvData, header):
+    # TODO: Marked for #23: not used internally in package
     list = []
     list.append(header)
     for i in range (0, len(indexList)):
@@ -260,6 +268,7 @@ def graph_to_pdf(nodes, edges, name):
     '''
     save a plot of the Bayes net graph in pdf
     '''
+    # TODO: Marked for #23: not used internally in package
     G=nx.DiGraph()
     G.add_nodes_from(nodes)
     G.add_edges_from(edges)
@@ -529,6 +538,7 @@ def condprobve2(self, query, evidence):
 
 
 def inferPosteriorDistribution(queries, evidence, baynet):
+    # TODO: Marked for #23: not used internally in package
     # TODO #45: Extend inferPosteriorDistribution to handle multiple query nodes
     fn = TableCPDFactorization(baynet)
 
@@ -541,6 +551,7 @@ def inferPosteriorDistribution(queries, evidence, baynet):
 
 
 def laplacesmooth(bn):
+    # TODO: Marked for #23: not used internally in package
     # TODO #46: Update laplacesmooth to align with condprobve/lmeestimateparams
     for vertex in bn.V:
         print 'vertex ', vertex
@@ -561,6 +572,7 @@ def laplacesmooth(bn):
     return bn
 
 def buildBN(trainingData, binstyleDict, numbinsDict, **kwargs): # need to modify to accept skel or skelfile
+    # TODO: Marked for #23: not used internally in package
     discretized_training_data, bin_ranges = discretizeTrainingData(trainingData, binstyleDict, numbinsDict, True)
     print 'discret training ',discretized_training_data
 

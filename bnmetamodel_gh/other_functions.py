@@ -8,11 +8,13 @@ from sklearn.model_selection import train_test_split
 import numbers
 
 def numericalSort(value):
+    # TODO: Marked for #23: not used internally in package
     parts = numbers.split(value)
     parts[1::2] = map(int, parts[1::2])
     return parts
 
 def loadDataset(filename, split, training_data=[], ver_data=[]):
+    # TODO: Marked for #23: not used internally in package
     with open(filename, 'rb') as csvfile:
         lines = csv.reader(csvfile)
         dataset = list(lines)
@@ -31,7 +33,7 @@ def loadDataset(filename, split, training_data=[], ver_data=[]):
     print 'X_test)old', ver_data
 
 def loadDataset_sk(filename, training_data=[], ver_data=[]):
-
+    # TODO: Marked for #23: not used internally in package
     with open(filename, 'rb') as csvfile:
         lines = csv.reader(csvfile)
         dataset = list(lines)
@@ -62,6 +64,7 @@ def loadDataset_sk(filename, training_data=[], ver_data=[]):
     return training_data, ver_data
 
 def generate_training_ver_data(csv_file_path, num_ver_samples):
+    # TODO: Marked for #23: not used internally in package
     # READ CSV DATA
 
     data = []
@@ -89,6 +92,7 @@ def generate_training_ver_data(csv_file_path, num_ver_samples):
     return training_data, ver_data
 
 def list_to_libpgm_dict(list):
+    # TODO: Marked for #23: not used internally in package
     data_array = []
     for i in range(1, len(list)):
         temp_dict = {}
@@ -157,6 +161,7 @@ def ranges_extreme(csvData):
     return ranges
 
 def valstobins(csvData, val_dict, numBins):
+    # TODO: Marked for #23: not used internally in package
     # typical val_dict looks like this: {'A':0.1',
     output_bins = {}
 
@@ -183,7 +188,7 @@ def valstobins(csvData, val_dict, numBins):
     return output_bins
 
 def whichBin (values_list, ranges_list, indexOnly = False):
-
+    # TODO: Marked for #23: not used internally in package
     binned_list = []
     bin_index_list = [0]*len(values_list)
 
@@ -206,6 +211,7 @@ def whichBin (values_list, ranges_list, indexOnly = False):
     else: return binned_list
 
 def disc2(csv_data, data, alldata, numBins, minmax):
+    # TODO: Marked for #23: not used internally in package
     assert (isinstance(data, list) and data and isinstance(data[0], dict)), "Arg must be a list of dicts."
     cdata = copy.deepcopy(data)
 
@@ -273,6 +279,7 @@ def disc2(csv_data, data, alldata, numBins, minmax):
     return binned_data
 
 def disc3(csv_data, data, numBins):
+    # TODO: Marked for #23: not used internally in package
     assert (isinstance(data, list) and data and isinstance(data[0], dict)), "Arg must be a list of dicts."
     cdata = copy.deepcopy(data)
 
@@ -301,6 +308,7 @@ def disc3(csv_data, data, numBins):
     return binned_data
 
 def disc(data, bins):
+    # TODO: Marked for #23: not used internally in package
     assert (isinstance(data, list) and data and isinstance(data[0], dict)), "Arg must be a list of dicts."
     cdata = copy.deepcopy(data)
 

@@ -36,25 +36,31 @@ class BN_Metamodel_easy:
         self.learnedBaynet = BayesianNetwork(BNdata = data, netStructure=BNskel)
 
     def json (self):
+        # TODO: Marked for #23: not used internally in package
         return self.learnedBaynet.json_data
 
     def generate (self):
+        # TODO: Marked for #23: not used internally in package
         return self.learnedBaynet
 
     def changeNumBinsDict (dict):
+        # TODO: Marked for #23: not used internally in package
         BN_Metamodel_easy.numBinsDict = dict
 
     def inferPD_JT_soft(self, query, softevidence):
+        # TODO: Marked for #23: not used internally in package
         posteriors = self.learnedBaynet.inferPD_JT_soft(softevidence)
         self.learnedBaynet.plotPDs(xlabel='Ranges ', ylabel='Probability',maintitle='Posterior Distributions',displayplt=True, posteriorPD=posteriors, evidence=softevidence.keys())
         return posteriors
 
     def inferPD_JT_hard(self, query, hardevidence):
+        # TODO: Marked for #23: not used internally in package
         posteriors = self.learnedBaynet.inferPD_JT_hard(hardevidence)
         self.learnedBaynet.plotPDs(xlabel='Ranges ', ylabel='Probability',maintitle='Posterior Distributions',displayplt=True, posteriorPD=posteriors, evidence=hardevidence.keys())
         return posteriors
 
     def inferPD_VE_hard(self, query, evidence):
+        # TODO: Marked for #23: not used internally in package
         a, posteriors = self.learnedBaynet.inferPD(query, evidence)
         self.learnedBaynet.plotPDs(xlabel='Ranges ', ylabel='Probability',maintitle='Posterior Distributions', displayplt=True, posteriorPD=posteriors,evidence=evidence.keys())
         return posteriors
