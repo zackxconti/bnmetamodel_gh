@@ -1,4 +1,5 @@
 from Helper_functions import *
+from .utils import potentials_to_dfs, pybbnToLibpgm_posteriors
 import pandas
 from pybbn.graph.jointree import EvidenceBuilder
 from pybbn.pptc.inferencecontroller import InferenceController
@@ -757,42 +758,11 @@ class BayesianNetwork:
         print 'performing inference using junction tree algorithm ...'
 
         # convert soft evidence to hard
-
         formattedEvidence = {}
         for var in hardEvidence.keys():
             for i in range(0, len(hardEvidence[var])):
                 if hardEvidence[var][i] == 1.0: formattedEvidence[var]=i
-
         print 'formatted evidence ',formattedEvidence
-
-        def potential_to_df(p):
-            data = []
-            for pe in p.entries:
-                v = pe.entries.values()[0]
-                p = pe.value
-                t = (v, p)
-                data.append(t)
-            return pd.DataFrame(data, columns=['val', 'p'])
-
-        def potentials_to_dfs(join_tree):
-            data = []
-            for node in join_tree.get_bbn_nodes():
-                name = node.variable.name
-                df = potential_to_df(join_tree.get_bbn_potential(node))
-                t = (name, df)
-                data.append(t)
-            return data
-
-        def pybbnToLibpgm_posteriors(pybbnPosteriors):
-            posteriors = {}
-
-            for node in pybbnPosteriors:
-                var = node[0]
-                df = node[1]
-                p = df.sort_values(by=['val'])
-                posteriors[var] = p['p'].tolist()
-
-            return posteriors # returns a dictionary of dataframes
 
         # generate list of pybnn evidence
         evidenceList = []
@@ -811,7 +781,7 @@ class BayesianNetwork:
         posteriors = potentials_to_dfs(self.join_tree)
 
         # join tree algorithm seems to eliminate bins whose posterior probabilities are zero
-        # check for missing bins and add them back
+        # the following checks for missing bins and add them back
 
         for posterior in posteriors:
             numbins = len(self.BinRanges[posterior[0]])
@@ -831,36 +801,6 @@ class BayesianNetwork:
         # TODO #40: Find way to enter probabilities and convert them to likelihoods in inferPD_JT_soft
 
         print 'performing inference using junction tree algorithm ...'
-
-        def potential_to_df(p):
-            data = []
-            for pe in p.entries:
-                v = pe.entries.values()[0]
-                p = pe.value
-                t = (v, p)
-                data.append(t)
-            return pd.DataFrame(data, columns=['val', 'p'])
-
-        def potentials_to_dfs(join_tree):
-            data = []
-            for node in join_tree.get_bbn_nodes():
-                name = node.variable.name
-                df = potential_to_df(join_tree.get_bbn_potential(node))
-                t = (name, df)
-
-                data.append(t)
-            return data
-
-        def pybbnToLibpgm_posteriors(pybbnPosteriors):
-            posteriors = {}
-
-            for node in pybbnPosteriors:
-                var = node[0]
-                df = node[1]
-                p = df.sort_values(by=['val'])
-                posteriors[var] = p['p'].tolist()
-
-            return posteriors # returns a dictionary of dataframes
 
         evidenceList = []
 
@@ -882,7 +822,6 @@ class BayesianNetwork:
         # the following checks for missing bins and adds them back
 
         for posterior in posteriors:
-            print 'posssssssterior ', posterior
             numbins = len(self.BinRanges[posterior[0]])
 
             for i in range (0,numbins):
@@ -892,7 +831,6 @@ class BayesianNetwork:
                     continue
 
         posteriorsDict = pybbnToLibpgm_posteriors(posteriors)
-
         print 'inference is complete ... posterior distributions were generated successfully'
 
         return posteriorsDict  # posteriors + evidence distributions (for visualising)

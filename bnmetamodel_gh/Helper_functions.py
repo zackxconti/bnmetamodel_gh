@@ -25,7 +25,6 @@ import re
 import networkx as nx
 
 
-
 def discrete_estimatebn( learner, data, skel, pvalparam=.05, indegree=0.5):
     assert (isinstance(data, list) and data and isinstance(data[0], dict)), "Arg must be a list of dicts."
 
@@ -221,8 +220,10 @@ def kfoldToDF (indexList, dataframe):
 
     return df
 
+
 def without_keys(d, keys):
     return {x: d[x] for x in d if x not in keys}
+
 
 def distribution_distance_error(correct_bin_locations, predicted_bin_probabilities, actual_values, bin_ranges, plot=False):
     distance_errors = []
@@ -266,6 +267,7 @@ def graph_to_pdf(nodes, edges, name):
     nx.drawing.nx_pydot.write_dot(G,name + ".dot")
     os.system("dot -Tpdf %s > %s" % (name+'.dot', name+'.pdf'))
 
+
 def discrete_mle_estimateparams2(graphskeleton, data):
     '''
     Estimate parameters for a discrete Bayesian network with a structure given by *graphskeleton* in order to maximize the probability of data given by *data*. This function takes the following arguments:
@@ -304,7 +306,7 @@ def discrete_mle_estimateparams2(graphskeleton, data):
         bn = DiscreteBayesianNetwork(skel, nd)
         data = bn.randomsample(200)
 
-        # instantiate my learner 
+        # instantiate my learner
         learner = PGMLearner()
 
         # estimate parameters from data and skeleton
@@ -312,7 +314,6 @@ def discrete_mle_estimateparams2(graphskeleton, data):
 
         # output
         print json.dumps(result.Vdata, indent=2)
-
     '''
     assert (isinstance(graphskeleton, GraphSkeleton)), "First arg must be a loaded GraphSkeleton class."
     assert (isinstance(data, list) and data and isinstance(data[0], dict)), "Second arg must be a list of dicts."
@@ -560,6 +561,7 @@ def laplacesmooth(bn):
 
     return bn
 
+
 def buildBN(trainingData, binstyleDict, numbinsDict, **kwargs): # need to modify to accept skel or skelfile
     discretized_training_data, bin_ranges = discretizeTrainingData(trainingData, binstyleDict, numbinsDict, True)
     print 'discret training ',discretized_training_data
@@ -732,3 +734,35 @@ def BNskelFromCSV (csvdata, targets):
     skel.toporder()
 
     return skel
+
+
+def potential_to_df(p):
+    data = []
+    for pe in p.entries:
+        v = pe.entries.values()[0]
+        p = pe.value
+        t = (v, p)
+        data.append(t)
+    return pd.DataFrame(data, columns=['val', 'p'])
+
+
+def potentials_to_dfs(join_tree):
+    data = []
+    for node in join_tree.get_bbn_nodes():
+        name = node.variable.name
+        df = potential_to_df(join_tree.get_bbn_potential(node))
+        t = (name, df)
+        data.append(t)
+    return data
+
+
+def pybbnToLibpgm_posteriors(pybbnPosteriors):
+    posteriors = {}
+
+    for node in pybbnPosteriors:
+        var = node[0]
+        df = node[1]
+        p = df.sort_values(by=['val'])
+        posteriors[var] = p['p'].tolist()
+
+    return posteriors
