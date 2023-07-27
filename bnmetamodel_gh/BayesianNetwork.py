@@ -905,6 +905,8 @@ class BayesianNetwork:
         return posteriorsDict  # posteriors + evidence distributions (for visualising)
 
     def convertEvidence (self, humanEvidence):
+        # TODO: Marked for #23: not used internally in package
+
         #humanEvidence can either be entered as ranges of interest {v1: [min, max], v2: [min, max]} or hard numbers {v1: [val], v2: [val]}
         #need to return a dict {v1:[0.0, 1.0, 0.2], v2:[0.1, 0.5, 1.0], ...}
 
