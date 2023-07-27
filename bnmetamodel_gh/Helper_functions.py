@@ -1,3 +1,6 @@
+from __future__ import print_function
+from builtins import str
+
 # IMPORTED LIBRARIES
 # sklearn imports
 import sklearn
@@ -11,7 +14,6 @@ from libpgm.discretebayesiannetwork import DiscreteBayesianNetwork
 from libpgm.tablecpdfactorization import TableCPDFactorization
 from libpgm.pgmlearner import PGMLearner
 
-import io
 import copy
 import itertools
 import pandas as pd
@@ -23,7 +25,6 @@ import os
 import operator
 import re
 import networkx as nx
-
 
 
 def discrete_estimatebn( learner, data, skel, pvalparam=.05, indegree=0.5):
@@ -43,8 +44,10 @@ def alphanum_key(s):
 
 def len_csvdata(csv_file_path):
     data = []
-    with io.open(csv_file_path, 'rb') as f:
-        reader = csv.reader(f, dialect=csv.excel)
+    with open(csv_file_path, 'rb') as f:
+        data = f.read()
+        data = data.decode('utf-8')
+        reader = csv.reader(data, dialect=csv.excel)
 
         for row in reader:
             data.append(row)
@@ -59,7 +62,9 @@ def loadDataFromCSV (csv_file_path, header=False):
     # (see also #43: Sort out the doubling up of the loadDataFromCSV function)
     dataset = []
     with open(csv_file_path, 'rb') as csvfile:
-        lines = csv.reader(csvfile)
+        data = csvfile.read()
+        data = data.decode('utf-8')
+        lines = csv.reader(data)
 
         for row in lines:
             dataset.append(row)
@@ -119,10 +124,10 @@ def percentile_bins(array, numBins):
     bin_ranges = []
     for i in range(0, numBins):
         p_min = round ((np.percentile(a, (percentage * i))),20)
-        # print 'p_min ', p_min
+        # print('p_min ', p_min)
         bin_widths.append(p_min)
         p_max = round((np.percentile(a, (percentage * (i + 1)))), 20)
-        # print 'p_max ', p_max
+        # print('p_max ', p_max)
         bin_ranges.append([round(p_min, 20), round(p_max, 20)])
 
     return bin_ranges
@@ -133,15 +138,15 @@ def draw_barchartpd(binranges, probabilities):
     widths = []
     edge = []
     for index, range in enumerate(binranges):
-        print 'range ', range
+        print('range ', range)
         edge.append(range[0])
         widths.append(range[1]-range[0])
         xticksv.append(((range[1]-range[0])/2)+range[0])
         if index ==len(binranges)-1: edge.append(range[1])
 
-    print 'xticks ', xticksv
-    print 'probabilities ', probabilities
-    print 'edge ', edge
+    print('xticks ', xticksv)
+    print('probabilities ', probabilities)
+    print('edge ', edge)
 
     b = plt.bar(xticksv, probabilities, align='center', width=widths, color='black', alpha=0.2)
 
@@ -165,7 +170,7 @@ def draw_histograms(df, binwidths, n_rows, n_cols, maintitle, xlabel, ylabel, di
         ax=fig.add_subplot(n_rows,n_cols,i+1)
 
         if isinstance(binwidths, int) == True:
-            print 'binwidths ', binwidths
+            print('binwidths ', binwidths)
             df[var_name].hist(bins=binwidths, ax=ax, color='black')
         else:
             df[var_name].hist(bins=binwidths[var_name],ax=ax, color='black' )
@@ -311,7 +316,7 @@ def discrete_mle_estimateparams2(graphskeleton, data):
         result = learner.discrete_mle_estimateparams(skel, data)
 
         # output
-        print json.dumps(result.Vdata, indent=2)
+        print(json.dumps(result.Vdata, indent=2))
 
     '''
     assert (isinstance(graphskeleton, GraphSkeleton)), "First arg must be a loaded GraphSkeleton class."
@@ -486,10 +491,10 @@ def condprobve2(self, query, evidence):
         result = fn.condprobve(query, evidence)
 
         # output
-        print json.dumps(result.vals, indent=2)
-        print json.dumps(result.scope, indent=2)
-        print json.dumps(result.card, indent=2)
-        print json.dumps(result.stride, indent=2)
+        print(json.dumps(result.vals, indent=2))
+        print(json.dumps(result.scope, indent=2))
+        print(json.dumps(result.card, indent=2))
+        print(json.dumps(result.stride, indent=2))
 
     '''
     assert (isinstance(query, dict) and isinstance(evidence, dict)), "First and second args must be dicts."
@@ -533,7 +538,7 @@ def inferPosteriorDistribution(queries, evidence, baynet):
     fn = TableCPDFactorization(baynet)
 
     result = condprobve2(fn, queries, evidence)  # written here
-    print 'result.vals ', result.vals
+    print('result.vals ', result.vals)
     probabilities = printdist(result, baynet)
     probabilities.sort_values(['max_def'], inplace=True)  # make sure probabilities are listed in order of bins
 
@@ -543,7 +548,7 @@ def inferPosteriorDistribution(queries, evidence, baynet):
 def laplacesmooth(bn):
     # TODO #46: Update laplacesmooth to align with condprobve/lmeestimateparams
     for vertex in bn.V:
-        print 'vertex ', vertex
+        print('vertex ', vertex)
         numBins = bn.Vdata[vertex]['numoutcomes']
 
         if not (bn.Vdata[vertex]["parents"]):  # has no parents
@@ -562,11 +567,11 @@ def laplacesmooth(bn):
 
 def buildBN(trainingData, binstyleDict, numbinsDict, **kwargs): # need to modify to accept skel or skelfile
     discretized_training_data, bin_ranges = discretizeTrainingData(trainingData, binstyleDict, numbinsDict, True)
-    print 'discret training ',discretized_training_data
+    print('discret training ',discretized_training_data)
 
     if 'skel'in kwargs:
         # load file into skeleton
-        if isinstance(kwargs['skel'], basestring):
+        if isinstance(kwargs['skel'], str):
             skel = GraphSkeleton()
             skel.load(kwargs['skel'])
             skel.toporder()
@@ -614,25 +619,25 @@ def discretize (dataframe, binRangesDict, plot=False):
                 ############ bin training data #############
                 if i==0: # if this is first bin then bin numbers larger or equal than min num and less or equal than max num (basically, include min num)
                     if binRange[0] <= item1 <= binRange[1]:
-                        # print item1,' is binned within ',binRange
+                        # print(item1,' is binned within ',binRange)
                         binnedDf.iloc[index][varName] = i
                         binCountsDict[varName][i][0] += 1
 
                 else: # if not first bin bin numbers less or equal to max num
                     if binRange[0] < item1 <= binRange[1]:
-                        # print item1,' is binned within ',binRange
+                        # print(item1,' is binned within ',binRange)
                         binnedDf.iloc[index][varName] = i
                         binCountsDict[varName][i][0] += 1
 
                 # catch values outside of range (smaller than min)
                 if i == 0 and binRange[0] > item1:
-                    # print 'the value ', item1, 'is smaller than the minimum bin', binRange[0]
+                    # print('the value ', item1, 'is smaller than the minimum bin', binRange[0])
                     binnedDf.iloc[index][varName] = i
                     binCountsDict[varName][i][0] += 1
 
                 # catch values outside of range (larger than max)
                 if i == len(discreteRanges) - 1 and binRange[1] < item1:
-                    # print 'the value ', item1, 'is larger than the maximum bin', binRange[1]
+                    # print('the value ', item1, 'is larger than the maximum bin', binRange[1])
                     binnedDf.iloc[index][varName] = i
                     binCountsDict[varName][i][0] += 1
 
@@ -690,10 +695,12 @@ def BNskelFromCSV (csvdata, targets):
     inputVerts = []
 
     # if data is a filepath
-    if isinstance(csvdata, basestring):
+    if isinstance(csvdata, str):
         dataset = []
         with open(csvdata, 'rb') as csvfile:
-            lines = csv.reader(csvfile)
+            data = csvfile.read()
+            data = data.decode('utf-8')
+            lines = csv.reader(data)
 
             for row in lines:
                 dataset.append(row)

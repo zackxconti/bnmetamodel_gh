@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import csv
 import pandas as pd
 from Helper_functions import getBinRanges, discretize
@@ -12,7 +14,7 @@ class BNdata:
         self.numBinsDict = numBinsDict
         self.binTypeDict = binTypeDict
 
-        print 'importing data from csv file ...'
+        print('importing data from csv file ...')
 
         # if data is a filepath
         if isinstance(csvdata, basestring):
@@ -42,16 +44,16 @@ class BNdata:
             self.data = pd.DataFrame(csvdata, header=0)
             self.dataArray = csvdata
 
-        print 'importing data from csv file completed'
+        print('importing data from csv file completed')
 
         ## range discretization using equal or percentile binning
         binRanges = getBinRanges(self.data,self.binTypeDict, self.numBinsDict) #returns dict with bin ranges
         self.binRanges = binRanges
         ## range discretization using minimum length description method
 
-        print 'binning data ...'
+        print('binning data ...')
         datadf, datadict, bincountsdict = discretize(self.data,self.binRanges,True)
-        print 'binning data complete'
+        print('binning data complete')
 
         self.binnedDict, self.binnedData, self.bincountsDict = datadf, datadict, bincountsdict
 
@@ -60,7 +62,9 @@ class BNdata:
         # (see also #43: Sort out the doubling up of the loadDataFromCSV function)
         dataset = []
         with open(self.file, 'rb') as csvfile:
-            lines = csv.reader(csvfile)
+            data = csvfile.read()
+            data = data.decode('utf-8')
+            lines = csv.reader(data)
 
             for row in lines:
                 dataset.append(row)
@@ -119,17 +123,17 @@ class BNdata:
                     ############ bin training data #############
 
                     if binRange[0] <= item1 <= binRange[1]:
-                        # print item1,' lies within ',binRange
+                        # print(item1,' lies within ',binRange)
                         binnedDf.iloc[index][varName] = i
                         binCountsDict[varName][i][0] += 1
 
                     if i == 0 and binRange[0] > item1:
-                        # print 'the value ', item1, 'is smaller than the minimum bin', binRange[0]
+                        # print('the value ', item1, 'is smaller than the minimum bin', binRange[0])
                         binnedDf.iloc[index][varName] = i
                         binCountsDict[varName][i][0] += 1
 
                     if i == len(discreteRanges) - 1 and binRange[1] < item1:
-                        # print 'the value ', item1, 'is larger than the maximum bin', binRange[1]
+                        # print('the value ', item1, 'is larger than the maximum bin', binRange[1])
                         binnedDf.iloc[index][varName] = i
                         binCountsDict[varName][i][0] += 1
 
@@ -138,6 +142,6 @@ class BNdata:
         binnedData = binnedDf.to_dict(orient='records') # a list of dictionaries
         self.binnedData = binnedData
 
-        print 'train binCountdict ', binCountsDict
-        print 'binned_trainingData ', binnedData
+        print('train binCountdict ', binCountsDict)
+        print('binned_trainingData ', binnedData)
         return binnedData

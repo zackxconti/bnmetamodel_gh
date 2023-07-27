@@ -1,12 +1,19 @@
+from __future__ import print_function
+from builtins import str
+
 from Helper_functions import *
+
 import pandas
 from pybbn.graph.jointree import EvidenceBuilder
 from pybbn.pptc.inferencecontroller import InferenceController
 from pybbn.graph.factory import Factory
 from pybbn.graph.jointree import EvidenceType
+from sklearn.model_selection import KFold
 import pandas as pd
 import copy
-from sklearn.model_selection import KFold
+
+from functools import reduce
+
 
 class BayesianNetwork:
 
@@ -17,7 +24,7 @@ class BayesianNetwork:
 
         ## CASE: load model from already built BN
         if modeldata != None:
-            print " model data has been supplied "
+            print(" model data has been supplied ")
             #### modeldata should be in json dict format ####
             self.json_data = modeldata
             self.learnedBaynet = DiscreteBayesianNetwork()
@@ -30,12 +37,12 @@ class BayesianNetwork:
 
         ## CASE: build new model from data supplied via BNdata and netstructure
         else:
-            print "model data has not been supplied"
+            print("model data has not been supplied")
             self.BNdata = BNdata
             self.structure = netStructure
             self.targets = BNdata.targets
 
-            if isinstance(self.structure, basestring): # if structure is passed as a file path
+            if isinstance(self.structure, str): # if structure is passed as a file path
                 # load file into skeleton
                 skel = GraphSkeleton()
                 skel.load(self.structure)
@@ -46,11 +53,11 @@ class BayesianNetwork:
                 self.skel = self.structure
 
             # learn bayesian network
-            print 'building bayesian network ...'
+            print('building bayesian network ...')
             baynet = discrete_mle_estimateparams2(self.skel, BNdata.binnedDict)  # using discrete_mle_estimateparams2 written as function in this file, not calling from libpgm
             # TODO #36: Baynet might be redundant since we are building a junction tree
 
-            print 'this is what the libpgm algorithm spits out all data ', self.skel.alldata
+            print('this is what the libpgm algorithm spits out all data ', self.skel.alldata)
 
             self.learnedBaynet = baynet
             self.nodes = baynet.V
@@ -60,17 +67,17 @@ class BayesianNetwork:
 
             self.BinRanges = self.BNdata.binRanges
 
-            print 'building bayesian network complete'
+            print('building bayesian network complete')
 
-        print 'json data ', self.json_data
+        print('json data ', self.json_data)
 
         # create BN with pybbn
         bbn = Factory.from_libpgm_discrete_dictionary(self.json_data)
 
-        print 'building junction tree ...'
+        print('building junction tree ...')
         # create join tree (this must be computed once)
         self.join_tree = InferenceController.apply(bbn)
-        print "building junction tree is complete"
+        print("building junction tree is complete")
 
     def generate(self):  # need to modify to accept skel or skelfile
         baynet = discrete_mle_estimateparams2(self.skel, self.binnedData)  # using discrete_mle_estimateparams2 written as function in this file, not calling from libpgm
@@ -97,22 +104,22 @@ class BayesianNetwork:
         return priorPDs
 
     def inferPD(self, query, evidence, plot=False):
-        print 'performing inference ...'
-        print 'building conditional probability table ...'
+        print('performing inference ...')
+        print('building conditional probability table ...')
 
         fn = TableCPDFactorization(self.learnedBaynet)
-        print 'conditional probability table is completed'
-        print 'performing inference with specified hard evidence ...'
+        print('conditional probability table is completed')
+        print('performing inference with specified hard evidence ...')
         result = condprobve2(fn, query, evidence)
 
-        print 'result ofrom condprobve2 ', result
+        print('result ofrom condprobve2 ', result)
 
         queriedMarginalPosteriors = []
         postInferencePDs = {}
 
         if len(query) > 1:
             probabilities = printdist(result, self.learnedBaynet)
-            print 'probabilities from printdist2 ', probabilities
+            print('probabilities from printdist2 ', probabilities)
 
             for varName in query.keys():
 
@@ -135,7 +142,7 @@ class BayesianNetwork:
             e[evidence[varName]]=1.0
             postInferencePDs[varName] = e
 
-        print 'inference is complete'
+        print('inference is complete')
         return queriedMarginalPosteriors, postInferencePDs
 
     def inferPD_2(self, query, evidence, plot=False): # this function will allow inference with soft evidence
@@ -148,14 +155,14 @@ class BayesianNetwork:
             for i in range (0, num_states): # for each state
                 e = {var:i}
 
-                print 'performing inference ...'
-                print 'building conditional probability table ...'
+                print('performing inference ...')
+                print('building conditional probability table ...')
 
                 #query is list of variables that are being queried
                 fn = TableCPDFactorization(self.learnedBaynet)
 
-                print 'conditional probability table is completed'
-                print 'performing inference with specified soft evidence ...'
+                print('conditional probability table is completed')
+                print('performing inference with specified soft evidence ...')
 
                 result = condprobve2(fn, query, e)
 
@@ -206,7 +213,7 @@ class BayesianNetwork:
         for evidenceVarName in evidence.keys():
             postInferencePDs[evidenceVarName] = evidence[evidenceVarName]
 
-        print 'inference is complete'
+        print('inference is complete')
         return assembledP, postInferencePDs
 
     def inferPD_3(self, query, evidence, plot=False): # this function will allow inference with soft evidence
@@ -335,7 +342,7 @@ class BayesianNetwork:
             for j, name in enumerate(evidence.keys()):
                 sequenceDict[name].append(sequence[i][j])
 
-        print ' ______________________________________________  sequence dict',sequenceDict
+        print(' ______________________________________________  sequence dict',sequenceDict)
 
         ################################################################################################################
 
@@ -403,7 +410,7 @@ class BayesianNetwork:
         # code to automatically set the number of columns and rows and dimensions of the figure
 
         n_totalplots = len(self.nodes)
-        print 'num of total plots ', n_totalplots
+        print('num of total plots ', n_totalplots)
 
         if n_totalplots <= 4:
             n_cols = n_totalplots
@@ -411,7 +418,7 @@ class BayesianNetwork:
         else:
             n_cols = 4
             n_rows = n_totalplots % 4
-            print 'num rows ', n_rows
+            print('num rows ', n_rows)
 
         if n_rows == 0: n_rows = n_totalplots/4
 
@@ -524,7 +531,7 @@ class BayesianNetwork:
 
         # loop through all data and split into training and testing for each fold
         for training_index, testing_index in kf.split(self.BNdata.data):
-            print '--------------------- FOLD NUMBER ', fold_counter+1, '  ---------------------'
+            print('--------------------- FOLD NUMBER ', fold_counter+1, '  ---------------------')
 
             trainingData = kfoldToDF(training_index,self.BNdata.data)
             testingData = kfoldToDF(testing_index, self.BNdata.data)
@@ -609,7 +616,7 @@ class BayesianNetwork:
 
         # loop through all data and split into training and testing for each fold
         for training_index, testing_index in kf.split(self.BNdata.data):
-            print '--------------------- FOLD NUMBER ', fold_counter + 1, '  ---------------------'
+            print('--------------------- FOLD NUMBER ', fold_counter + 1, '  ---------------------')
 
             trainingData = kfoldToDF(training_index, self.BNdata.data)
             testingData = kfoldToDF(testing_index, self.BNdata.data)
@@ -754,7 +761,7 @@ class BayesianNetwork:
         # hardEvidence is supplied in the form {'max_def': 5, 'span': 4}
         # converts libpgm to pybnn then use pybnn to run junction tree and then spitback out results for visualising
 
-        print 'performing inference using junction tree algorithm ...'
+        print('performing inference using junction tree algorithm ...')
 
         # convert soft evidence to hard
 
@@ -763,7 +770,7 @@ class BayesianNetwork:
             for i in range(0, len(hardEvidence[var])):
                 if hardEvidence[var][i] == 1.0: formattedEvidence[var]=i
 
-        print 'formatted evidence ',formattedEvidence
+        print('formatted evidence ',formattedEvidence)
 
         def potential_to_df(p):
             data = []
@@ -818,19 +825,19 @@ class BayesianNetwork:
 
             for i in range (0,numbins):
                 if float (i) not in posterior[1]['val'].tolist(): # if
-                    #print 'bin number ', float(i) ,' was missing '
+                    #print('bin number ', float(i) ,' was missing ')
                     posterior[1].loc[len(posterior[1])] = [float(i), 0.0]
                     continue
 
         posteriorsDict = pybbnToLibpgm_posteriors(posteriors)
-        print 'inference is complete ... posterior distributions were generated successfully'
+        print('inference is complete ... posterior distributions were generated successfully')
 
         return posteriorsDict
 
     def inferPD_JT_soft (self, softEvidence ): # method to perform inference with soft evidence (virtual) using join tree only
         # TODO #40: Find way to enter probabilities and convert them to likelihoods in inferPD_JT_soft
 
-        print 'performing inference using junction tree algorithm ...'
+        print('performing inference using junction tree algorithm ...')
 
         def potential_to_df(p):
             data = []
@@ -882,18 +889,18 @@ class BayesianNetwork:
         # the following checks for missing bins and adds them back
 
         for posterior in posteriors:
-            print 'posssssssterior ', posterior
+            print('posssssssterior ', posterior)
             numbins = len(self.BinRanges[posterior[0]])
 
             for i in range (0,numbins):
                 if float (i) not in posterior[1]['val'].tolist(): # if
-                    #print 'bin number ', float(i) ,' was missing '
+                    #print('bin number ', float(i) ,' was missing ')
                     posterior[1].loc[len(posterior[1])] = [float(i), 0.0]
                     continue
 
         posteriorsDict = pybbnToLibpgm_posteriors(posteriors)
 
-        print 'inference is complete ... posterior distributions were generated successfully'
+        print('inference is complete ... posterior distributions were generated successfully')
 
         return posteriorsDict  # posteriors + evidence distributions (for visualising)
 
@@ -923,6 +930,6 @@ class BayesianNetwork:
                     if binRange[0] <= input_range_min <= binRange[1] or binRange[0] <= input_range_max <= binRange[1]:
                         allevidence[var][index] = 1.0
 
-        for item in allevidence: print item, ' -- ', allevidence[item]
+        for item in allevidence: print(item, ' -- ', allevidence[item])
 
         return allevidence

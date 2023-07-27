@@ -1,5 +1,6 @@
+from __future__ import print_function
+
 import csv
-import io
 import copy
 import pandas as pd
 import numpy as np
@@ -14,7 +15,9 @@ def numericalSort(value):
 
 def loadDataset(filename, split, training_data=[], ver_data=[]):
     with open(filename, 'rb') as csvfile:
-        lines = csv.reader(csvfile)
+        data = csvfile.read()
+        data = data.decode('utf-8')
+        lines = csv.reader(data)
         dataset = list(lines)
     training_data.append(dataset[0])
     ver_data.append(dataset[0])
@@ -27,13 +30,15 @@ def loadDataset(filename, split, training_data=[], ver_data=[]):
         else:
             ver_data.append(dataset[x])
 
-    print 'Xtrain_old', training_data
-    print 'X_test)old', ver_data
+    print('Xtrain_old', training_data)
+    print('X_test)old', ver_data)
 
 def loadDataset_sk(filename, training_data=[], ver_data=[]):
 
     with open(filename, 'rb') as csvfile:
-        lines = csv.reader(csvfile)
+        data = csvfile.read()
+        data = data.decode('utf-8')
+        lines = csv.reader(data)
         dataset = list(lines)
     header = dataset[0]
     del (dataset[0])
@@ -57,16 +62,18 @@ def loadDataset_sk(filename, training_data=[], ver_data=[]):
         for j in range(len(ver_data[i])):
             float(ver_data[i][j])        
     """
-    print 'len Xtrain', len(training_data)
-    print 'len X_test', len(ver_data)
+    print('len Xtrain', len(training_data))
+    print('len X_test', len(ver_data))
     return training_data, ver_data
 
 def generate_training_ver_data(csv_file_path, num_ver_samples):
     # READ CSV DATA
 
     data = []
-    with io.open(csv_file_path, 'rb') as f:
-        reader = csv.reader(f, dialect=csv.excel)
+    with open(csv_file_path, 'rb') as f:
+        data = f.read()
+        data = data.decode('utf-8')
+        reader = csv.reader(data, dialect=csv.excel)
 
         for row in reader:
             data.append(row)
@@ -169,11 +176,11 @@ def valstobins(csvData, val_dict, numBins):
         max = extreme_ranges_dict[key][1]
 
         bin_ranges = bins(max, min, numBins)
-        print 'bin range for ', key, bin_ranges
+        print('bin range for ', key, bin_ranges)
 
         for j in range(0, len(bin_ranges)):
             val_check = val_dict[key]
-            print 'value to check', val_check
+            print('value to check', val_check)
             bin_min = bin_ranges[j][0]
             bin_max = bin_ranges[j][1]
 
@@ -187,7 +194,7 @@ def whichBin (values_list, ranges_list, indexOnly = False):
     binned_list = []
     bin_index_list = [0]*len(values_list)
 
-    print 'ranges ', ranges_list
+    print('ranges ', ranges_list)
 
     for i in range (len(values_list)):
         binned = []
@@ -201,7 +208,7 @@ def whichBin (values_list, ranges_list, indexOnly = False):
 
         binned_list.append(binned)
 
-    print 'bin index list', bin_index_list
+    print('bin index list', bin_index_list)
     if indexOnly == True : return bin_index_list
     else: return binned_list
 
@@ -212,13 +219,13 @@ def disc2(csv_data, data, alldata, numBins, minmax):
     extreme_ranges_dict = ranges_extreme(csv_data)
 
     binned_data = []
-    print 'csv_data', csv_data
+    print('csv_data', csv_data)
 
     df = pd.DataFrame(csv_data)
     df.columns = df.iloc[0]
     df = df[1:]
 
-    print 'all data', alldata
+    print('all data', alldata)
 
     alldf = pd.DataFrame(alldata)
     alldf.columns = alldf.iloc[0]
@@ -234,7 +241,7 @@ def disc2(csv_data, data, alldata, numBins, minmax):
         all_ranges.append(percentile_bins(alldf[alldf.columns[i]], numBins))
         if i ==0: output_ranges.append(percentile_bins(alldf[alldf.columns[i]], numBins))
 
-    print 'all ranges ', all_ranges
+    print('all ranges ', all_ranges)
 
     for i in range(0, len(cdata)):
         output_bins = {}
@@ -269,7 +276,7 @@ def disc2(csv_data, data, alldata, numBins, minmax):
 
         binned_data.append(output_bins)
 
-    print 'binned data', binned_data
+    print('binned data', binned_data)
     return binned_data
 
 def disc3(csv_data, data, numBins):
