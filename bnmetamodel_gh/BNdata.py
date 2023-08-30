@@ -12,7 +12,7 @@ class BNdata:
         self.numBinsDict = numBinsDict
         self.binTypeDict = binTypeDict
 
-        print 'importing data from csv file ...'
+        #print 'importing data from csv file ...'
 
         # if data is a filepath
         if isinstance(csvdata, basestring):
@@ -42,16 +42,16 @@ class BNdata:
             self.data = pd.DataFrame(csvdata, header=0)
             self.dataArray = csvdata
 
-        print 'importing data from csv file completed'
+        #print 'importing data from csv file completed'
 
         ## range discretization using equal or percentile binning
         binRanges = getBinRanges(self.data,self.binTypeDict, self.numBinsDict) #returns dict with bin ranges
         self.binRanges = binRanges
         ## range discretization using minimum length description method
 
-        print 'binning data ...'
+        #print 'binning data ...'
         datadf, datadict, bincountsdict = discretize(self.data,self.binRanges,True)
-        print 'binning data complete'
+        #print 'binning data complete'
 
         self.binnedDict, self.binnedData, self.bincountsDict = datadf, datadict, bincountsdict
 
