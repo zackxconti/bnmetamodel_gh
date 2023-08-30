@@ -15,7 +15,7 @@ class BNdata:
         #print 'importing data from csv file ...'
 
         # if data is a filepath
-        if isinstance(csvdata, basestring):
+        if isinstance(csvdata, str):
             dataset = []
             with open(csvdata, 'rb') as csvfile:
                 lines = csv.reader(csvfile)
@@ -79,24 +79,24 @@ class BNdata:
 
         return data
 
-    def getBinRanges (self, binTypeDict, numBinsDict):
-        trainingDfDiscterizedRanges = []
-        trainingDfDiscterizedRangesDict = {}
-
-        # loop through variables in trainingDf (columns) to discretize into ranges according to trainingDf
-        for varName in list(self.data):
-            # if true, discretise variable i, using percentiles, if false, discretise using equal bins
-            if binTypeDict[varName] == 'percentile':
-                trainingDfDiscterizedRanges.append(percentile_bins(self.data[varName], numBinsDict.get(varName)))  # adds to a list
-                trainingDfDiscterizedRangesDict[varName] = percentile_bins(self.data[varName], numBinsDict.get(varName))  # adds to a dictionary
-            elif 'equal':
-                trainingDfDiscterizedRanges.append(bins(max(self.data[varName]), min(self.data[varName]),numBinsDict.get(varName)))  # adds to a list
-                trainingDfDiscterizedRangesDict[varName] = bins(max(self.data[varName]), min(self.data[varName]),numBinsDict.get(varName))  # adds to a dictionary
-
-        # update class attribute, while you're at it
-        self.bin_ranges = trainingDfDiscterizedRangesDict
-
-        return trainingDfDiscterizedRangesDict
+    # def getBinRanges (self, binTypeDict, numBinsDict):
+    #     trainingDfDiscterizedRanges = []
+    #     trainingDfDiscterizedRangesDict = {}
+    #
+    #     # loop through variables in trainingDf (columns) to discretize into ranges according to trainingDf
+    #     for varName in list(self.data):
+    #         # if true, discretise variable i, using percentiles, if false, discretise using equal bins
+    #         if binTypeDict[varName] == 'percentile':
+    #             trainingDfDiscterizedRanges.append(percentile_bins(self.data[varName], numBinsDict.get(varName)))  # adds to a list
+    #             trainingDfDiscterizedRangesDict[varName] = percentile_bins(self.data[varName], numBinsDict.get(varName))  # adds to a dictionary
+    #         elif 'equal':
+    #             trainingDfDiscterizedRanges.append(bins(max(self.data[varName]), min(self.data[varName]),numBinsDict.get(varName)))  # adds to a list
+    #             trainingDfDiscterizedRangesDict[varName] = bins(max(self.data[varName]), min(self.data[varName]),numBinsDict.get(varName))  # adds to a dictionary
+    #
+    #     # update class attribute, while you're at it
+    #     self.bin_ranges = trainingDfDiscterizedRangesDict
+    #
+    #     return trainingDfDiscterizedRangesDict
 
     def discretize (self, binRangesDict, plot=False):
         binnedDf = pd.DataFrame().reindex_like(self.data)
@@ -138,6 +138,6 @@ class BNdata:
         binnedData = binnedDf.to_dict(orient='records') # a list of dictionaries
         self.binnedData = binnedData
 
-        print 'train binCountdict ', binCountsDict
-        print 'binned_trainingData ', binnedData
+        print ('train binCountdict ', binCountsDict)
+        print ('binned_trainingData ', binnedData)
         return binnedData

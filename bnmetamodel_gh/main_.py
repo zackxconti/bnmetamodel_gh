@@ -17,19 +17,20 @@ b = BN_Metamodel_easy.BN_Metamodel_easy(csvfilepath, ['deflection'])
 bn = b.generate()
 
 ### NERVI PROBLEM ###
-# query = {'Height':0, 'Amplitude':0, 'Beam_tip_depth':0, 'Beam_start_depth':0, 'bc_X_position':0, 'Span':0}
-evidence = {'Height':[1.0, 0.0, 0.0, 0.0, 0.0], 'Amplitude':[1.0, 0.0, 0.0, 0.0, 0.0], 'Beam_tip_depth':[1.0, 0.0, 0.0, 0.0, 0.0], 'Beam_start_depth':[1.0, 0.0, 0.0, 0.0, 0.0], 'bc_X_position':[1.0, 0.0, 0.0, 0.0, 0.0], 'Span':[1.0, 0.0, 0.0, 0.0, 0.0]}
+# evidence= {'Height':0, 'Amplitude':0, 'Beam_tip_depth':0, 'Beam_start_depth':0, 'bc_X_position':0, 'Span':0}
+evidence = {'Height':[1.0, 0.0, 0.0, 0.0, 0.0], 'Amplitude':[1.0, 0.0, 0.0, 0.0, 0.0], 'Beam_tip_depth':[1.0, 0.0, 0.0, 0.0, 0.0], 'Beam_start_depth':[0.5, 0.5, 0.0, 0.0, 0.0], 'bc_X_position':[1.0, 0.0, 0.0, 0.0, 0.0], 'Span':[1.0, 0.0, 0.0, 0.0, 0.0]}
 #evidence = {'deflection':[0.5, 0.5, 0.0, 0.0, 0.0], 'weight':[0.5, 0.5, 0.0, 0.0, 0.0] }
-query = {'deflection': 0 }
+# query = {'deflection': 0 }
 # evidence = {'deflection':0 }
 # evidence = {'max_def':[1, 0.0, 0.0, 0.0], 'weight':[1, 0.0, 0.0, 0.0]  }
 # evidence = {'deflection':[1, 0.0, 0.0, 0.0]}
 
 
 #Perform inference to 'update' distributions (using Bayesian inference in the background)
-a, posteriors = bn.inferPD_3(query, evidence) #a is a dummy variable
+# a, posteriors = bn.inferPD_3(query, evidence) #a is a dummy variable
 # posteriors = bn.inferPD_JT_hard(evidence)
-# posteriors = bn.inferPD_JT_soft(evidence)
+posteriors = bn.inferPD_JT_soft(evidence)
+# a, posteriors = bn.inferPD_4(query, evidence)
 
 for item in posteriors: print (item,'  ', posteriors[item])
 
