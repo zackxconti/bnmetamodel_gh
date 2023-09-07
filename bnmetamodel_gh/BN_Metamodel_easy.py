@@ -18,7 +18,7 @@ class BN_Metamodel_easy:
         self.numBinsDict = {} # declare as empty attribute
 
         # extract skeleton from csv
-        BNskel = BNskelFromCSV(csvdata, targets)
+        BNskel = BNskelFromCSVpybbn(csvdata, targets)
 
         if 'numBinsDict' in kwargs:
             self.numBinsDict = kwargs['numBinsDict']

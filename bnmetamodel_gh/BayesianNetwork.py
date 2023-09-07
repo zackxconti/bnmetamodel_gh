@@ -20,13 +20,13 @@ class BayesianNetwork:
             print (" model data has been supplied ")
             #### modeldata should be in json dict format ####
             self.json_data = modeldata
-            self.learnedBaynet = DiscreteBayesianNetwork()
+            # self.learnedBaynet = DiscreteBayesianNetwork()
             self.nodes = modeldata['V']
             self.edges = modeldata ['E']
             self.Vdata = modeldata ['Vdata']
 
             self.targets = targetlist
-            self.BinRanges = binranges;
+            self.BinRanges = binranges
 
         ## CASE: build new model from data supplied via BNdata and netstructure
         else:
@@ -41,47 +41,46 @@ class BayesianNetwork:
                 skel.load(self.structure)
                 skel.toporder()
                 self.skel = skel
-            else:                                      # if structure is passed as loaded graph skeleton
+            else:                               # if structure is passed as loaded graph skeleton
                 # given skel
                 self.skel = self.structure
 
             # learn bayesian network
             print ('building bayesian network ...')
-            baynet = discrete_mle_estimateparams2(self.skel, BNdata.binnedDict)  # using discrete_mle_estimateparams2 written as function in this file, not calling from libpgm
-            # TODO #36: Baynet might be redundant since we are building a junction tree
 
-            print ('this is what the libpgm algorithm spits out all data ', self.skel.alldata)
+            binnedData = pd.DataFrame.from_dict(BNdata.binnedData)
+            baynet = Factory.from_data(netStructure, binnedData)
+            print('building junction tree ...')
+            # create join tree (this must be computed once)
+            self.join_tree = InferenceController.apply(baynet)
+            print("building junction tree is complete")
+
+            # baynet = discrete_mle_estimateparams2(self.skel, BNdata.binnedDict)  # using discrete_mle_estimateparams2 written as function in this file, not calling from libpgm
+            # # TODO #36: Baynet might be redundant since we are building a junction tree
 
             self.learnedBaynet = baynet
-            self.nodes = baynet.V
-            self.edges = baynet.E
-            self.Vdata = baynet.Vdata
-            self.json_data = {'V': self.nodes, 'E': self.edges, 'Vdata': self.Vdata}
+            self.nodes = [node.variable.name for node in baynet.get_nodes()]
+            # self.edges = list(baynet.edges.values())
+            # self.Vdata = baynet.
+            # self.json_data = {'V': self.nodes, 'E': self.edges, 'Vdata': self.Vdata}
 
             self.BinRanges = self.BNdata.binRanges
 
             print ('building bayesian network complete')
 
-        print ('json data ', self.json_data)
-
-        bbn = Factory.from_data(self.structure, BNdata.binnedDict)
-
+        # print ('json data ', self.json_data)
         # create BN with pybbn
         # bbn = Factory.from_libpgm_discrete_dictionary(self.json_data)
 
-        print ('building junction tree ...')
-        # create join tree (this must be computed once)
-        self.join_tree = InferenceController.apply(bbn)
-        print ("building junction tree is complete")
 
-    def generate(self):  # need to modify to accept skel or skelfile
-        baynet = discrete_mle_estimateparams2(self.skel, self.binnedData)  # using discrete_mle_estimateparams2 written as function in this file, not calling from libpgm
-
-        self.nodes = baynet.V
-        self.edges = baynet.E
-        self.Vdata = baynet.Vdata
-
-        return baynet
+    # def generate(self):  # need to modify to accept skel or skelfile
+    #     baynet = discrete_mle_estimateparams2(self.skel, self.binnedData)  # using discrete_mle_estimateparams2 written as function in this file, not calling from libpgm
+    #
+    #     self.nodes = baynet.V
+    #     self.edges = baynet.E
+    #     self.Vdata = baynet.Vdata
+    #
+    #     return baynet
 
     def getpriors (self):
         priorPDs = {}
@@ -442,7 +441,6 @@ class BayesianNetwork:
         evidenceVars = []
         if 'evidence' in kwargs:
             evidenceVars = kwargs['evidence']
-
             #sort evidence variables to be in the beginning of the list
             for index, var in enumerate (evidenceVars):
                 nodessorted.insert(index, nodessorted.pop(nodessorted.index(evidenceVars[index])))
@@ -450,7 +448,7 @@ class BayesianNetwork:
         i = 0
         for varName in nodessorted:
             ax = fig.add_subplot(n_rows, n_cols, i + 1)
-            ax.set_axis_bgcolor("whitesmoke")
+            ax.set_facecolor("whitesmoke")
 
             xticksv = []
             binwidths = []
@@ -501,90 +499,90 @@ class BayesianNetwork:
 
         if displayplt == True: plt.show()
 
-    def crossValidate (self, targetList, numFolds):  # returns a list of error dataframes, one for each target
-        #perhaps use **kwargs, to ask if data not specified, then use self.binnedData
-
-        error_dict = {}
-        # create empty dataframes to store errors for each target
-        for target in targetList:
-            df_columns = ['NRMSE', 'LogLoss', 'Classification Error', 'Distance Error']
-            df_indices = ['Fold_%s' % (num + 1) for num in range(numFolds)]
-            error_df = pandas.DataFrame(index=df_indices, columns=df_columns)
-            error_df = error_df.fillna(0.0)
-            error_df['Distance Error'] = error_df['Distance Error'].astype(object)
-            error_df['Classification Error'] = error_df['Classification Error'].astype(object)
-
-            error_dict[target] = error_df
-
-        # specify number of k folds
-        kf = KFold(n_splits=numFolds)
-        kf.get_n_splits((self.BNdata.dataArray))
-
-        fold_counter = 0
-        listRMSE = 0.0
-        listLogLoss = 0.0
-
-        # loop through all data and split into training and testing for each fold
-        for training_index, testing_index in kf.split(self.BNdata.data):
-            print ('--------------------- FOLD NUMBER ', fold_counter+1, '  ---------------------')
-
-            trainingData = kfoldToDF(training_index,self.BNdata.data)
-            testingData = kfoldToDF(testing_index, self.BNdata.data)
-
-            # bin test/train data
-            binRanges = self.BinRanges
-            binnedTrainingDict, binnedTrainingData, binCountsTr =discretize(trainingData,binRanges,False)
-            binnedTestingDict, binnedTestingData, binCountsTest = discretize(testingData,binRanges,False)
-            binnedTestingData=binnedTestingData.astype(int)
-
-            # estimate BN parameters
-            baynet = discrete_mle_estimateparams2(self.skel, binnedTrainingDict)
-
-            queries ={}
-            marginalTargetPosteriorsDict = {}
-            for target in targetList:
-                # assign bin to zero to query distribution (libpgm convention)
-                queries[target] = 0
-                # create empty list for each target to populate with predicted target posterior distributions
-                marginalTargetPosteriorsDict[target] = []
-
-            # In this loop we predict the posterior distributions for each queried target
-            # TODO #39: Adapt loops for storing predicted posteriors
-
-            for i in range (0,binnedTestingData.shape[0]):
-                row = binnedTestingDict[i]
-                evidence = without_keys(row, queries.keys())
-                fn = TableCPDFactorization(baynet)
-                result = condprobve2(fn, queries, evidence)
-
-                # if more than 1 target was specified
-                if len(queries) > 1:
-                    posteriors = printdist(result, baynet)
-                    for target in targetList:
-                        marginalPosterior = posteriors.groupby(target)['probability'].sum()
-                        marginalTargetPosteriorsDict[target].append(marginalPosterior) #might need [probability]
-
-                # if only 1 target was specified
-                else:
-
-                    posterior = printdist(result, baynet)
-                    posterior.sort_values([targetList[0]],inplace=True) # to make sure probabilities are listed in order of bins, sorted by first queried variable
-                    marginalTargetPosteriorsDict[target].append(posterior['probability'])
-
-            # generate accuracy measures at one go
-            # for each target
-            for key in error_dict.keys():
-                rmse, loglossfunction, norm_distance_errors, correct_bin_probabilities = generateErrors(marginalTargetPosteriorsDict[key], testingData, binnedTestingData, binRanges, key)
-
-                # add generated measures to error_df (error dataframe)
-                error_dict[key]['NRMSE'][fold_counter] = rmse
-                error_dict[key]['LogLoss'][fold_counter] = loglossfunction
-                error_dict[key]['Distance Error'][fold_counter] = norm_distance_errors
-                error_dict[key]['Classification Error'][fold_counter] = correct_bin_probabilities
-
-            fold_counter +=1
-
-        return error_dict
+    # def crossValidate (self, targetList, numFolds):  # returns a list of error dataframes, one for each target
+    #     #perhaps use **kwargs, to ask if data not specified, then use self.binnedData
+    #
+    #     error_dict = {}
+    #     # create empty dataframes to store errors for each target
+    #     for target in targetList:
+    #         df_columns = ['NRMSE', 'LogLoss', 'Classification Error', 'Distance Error']
+    #         df_indices = ['Fold_%s' % (num + 1) for num in range(numFolds)]
+    #         error_df = pandas.DataFrame(index=df_indices, columns=df_columns)
+    #         error_df = error_df.fillna(0.0)
+    #         error_df['Distance Error'] = error_df['Distance Error'].astype(object)
+    #         error_df['Classification Error'] = error_df['Classification Error'].astype(object)
+    #
+    #         error_dict[target] = error_df
+    #
+    #     # specify number of k folds
+    #     kf = KFold(n_splits=numFolds)
+    #     kf.get_n_splits((self.BNdata.dataArray))
+    #
+    #     fold_counter = 0
+    #     listRMSE = 0.0
+    #     listLogLoss = 0.0
+    #
+    #     # loop through all data and split into training and testing for each fold
+    #     for training_index, testing_index in kf.split(self.BNdata.data):
+    #         print ('--------------------- FOLD NUMBER ', fold_counter+1, '  ---------------------')
+    #
+    #         trainingData = kfoldToDF(training_index,self.BNdata.data)
+    #         testingData = kfoldToDF(testing_index, self.BNdata.data)
+    #
+    #         # bin test/train data
+    #         binRanges = self.BinRanges
+    #         binnedTrainingDict, binnedTrainingData, binCountsTr =discretize(trainingData,binRanges,False)
+    #         binnedTestingDict, binnedTestingData, binCountsTest = discretize(testingData,binRanges,False)
+    #         binnedTestingData=binnedTestingData.astype(int)
+    #
+    #         # estimate BN parameters
+    #         baynet = discrete_mle_estimateparams2(self.skel, binnedTrainingDict)
+    #
+    #         queries ={}
+    #         marginalTargetPosteriorsDict = {}
+    #         for target in targetList:
+    #             # assign bin to zero to query distribution (libpgm convention)
+    #             queries[target] = 0
+    #             # create empty list for each target to populate with predicted target posterior distributions
+    #             marginalTargetPosteriorsDict[target] = []
+    #
+    #         # In this loop we predict the posterior distributions for each queried target
+    #         # TODO #39: Adapt loops for storing predicted posteriors
+    #
+    #         for i in range (0,binnedTestingData.shape[0]):
+    #             row = binnedTestingDict[i]
+    #             evidence = without_keys(row, queries.keys())
+    #             fn = TableCPDFactorization(baynet)
+    #             result = condprobve2(fn, queries, evidence)
+    #
+    #             # if more than 1 target was specified
+    #             if len(queries) > 1:
+    #                 posteriors = printdist(result, baynet)
+    #                 for target in targetList:
+    #                     marginalPosterior = posteriors.groupby(target)['probability'].sum()
+    #                     marginalTargetPosteriorsDict[target].append(marginalPosterior) #might need [probability]
+    #
+    #             # if only 1 target was specified
+    #             else:
+    #
+    #                 posterior = printdist(result, baynet)
+    #                 posterior.sort_values([targetList[0]],inplace=True) # to make sure probabilities are listed in order of bins, sorted by first queried variable
+    #                 marginalTargetPosteriorsDict[target].append(posterior['probability'])
+    #
+    #         # generate accuracy measures at one go
+    #         # for each target
+    #         for key in error_dict.keys():
+    #             rmse, loglossfunction, norm_distance_errors, correct_bin_probabilities = generateErrors(marginalTargetPosteriorsDict[key], testingData, binnedTestingData, binRanges, key)
+    #
+    #             # add generated measures to error_df (error dataframe)
+    #             error_dict[key]['NRMSE'][fold_counter] = rmse
+    #             error_dict[key]['LogLoss'][fold_counter] = loglossfunction
+    #             error_dict[key]['Distance Error'][fold_counter] = norm_distance_errors
+    #             error_dict[key]['Classification Error'][fold_counter] = correct_bin_probabilities
+    #
+    #         fold_counter +=1
+    #
+    #     return error_dict
 
     def crossValidate_JT(self, targetList, numFolds):  # returns a list of error dataframes, one for each target
         # perhaps use **kwargs, to ask if data not specified, then use self.binnedData
@@ -765,14 +763,14 @@ class BayesianNetwork:
             for i in range(0, len(hardEvidence[var])):
                 if hardEvidence[var][i] == 1.0: formattedEvidence[var]=i
 
-        # print 'formatted evidence ',formattedEvidence
+        print ('formatted evidence ',formattedEvidence)
 
         # formattedEvidence = hardEvidence
 
         def potential_to_df(p):
             data = []
             for pe in p.entries:
-                v = pe.entries.values()[0]
+                v = list(pe.entries.values())[0]
                 p = pe.value
                 t = (v, p)
                 data.append(t)
@@ -783,6 +781,7 @@ class BayesianNetwork:
             for node in join_tree.get_bbn_nodes():
                 name = node.variable.name
                 df = potential_to_df(join_tree.get_bbn_potential(node))
+                print ('df potentials \n', df)
                 t = (name, df)
                 data.append(t)
             return data
@@ -807,10 +806,14 @@ class BayesianNetwork:
                 .with_evidence(formattedEvidence[e], 1.0) \
                 .build()
 
+            self.join_tree.unobserve_all()
+            self.join_tree.set_observation(ev)
             evidenceList.append(ev)
 
-        self.join_tree.unobserve_all()
-        self.join_tree.update_evidences(evidenceList)
+        # self.join_tree.unobserve_all()
+        # self.join_tree.update_evidences(evidenceList)
+
+        print ('join tree \n', self.join_tree)
 
         posteriors = potentials_to_dfs(self.join_tree)
 

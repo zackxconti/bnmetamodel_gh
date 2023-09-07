@@ -814,6 +814,71 @@ def generateErrors (predictedTargetPosteriors, testingData, binnedTestingData, b
     return float(rmse),float(loglossfunction),norm_distance_errors,correct_bin_probabilities
 
 
+def BNskelFromCSVpybbn (csvdata, targets):
+    # TODO #49: Refactor BNskelFromCSV to include swapping direction of too many inputs into a node
+
+    ######## EXTRACT HEADER STRINGS FROM CSV FILE ########
+    # skel = GraphSkeleton() # libpgm dependency
+    BNstructure = {}
+    inputVerts = []
+
+    # if data is a filepath
+    if isinstance(csvdata, str): #previously (csvdata, basestring) python 2.0 compatability
+        dataset = []
+        with open(csvdata, 'rt') as csvfile:
+            lines = csv.reader(csvfile)
+
+            for row in lines:
+                dataset.append(row)
+
+        allVertices = dataset [0]
+
+    else:
+        allVertices = csvdata[0]
+
+    BNstructure ['V'] = allVertices
+    # skel.V = allVertices
+
+    structure = {}
+
+    for verts in allVertices:
+        if verts not in targets:
+            inputVerts.append(verts)
+            # structure [verts] =
+
+    # target, each input
+    edges = []
+
+    if len(inputVerts) < len(targets):
+        for input in inputVerts:
+            structure[input]=[]
+        for target in targets:
+            structure[target] = []
+            for input in inputVerts:
+                structure[target].append(input)
+                # edge = [target, input]
+                # edges.append(edge)
+
+        # BNstructure ['E'] = edges
+        # skel.E = edges
+    else:
+        for target in targets:
+            structure[target] = []
+        for input in inputVerts:
+            structure[input] = []
+            for target in targets:
+                structure[input].append(target)
+                # edge = [input, target]
+                # edges.append(edge)
+        # BNstructure['E'] = edges
+        # skel.E = edges
+
+    # print ('edges\n ',edges)
+
+    # skel.toporder()
+
+    return structure
+
 def BNskelFromCSV (csvdata, targets):
     # TODO #49: Refactor BNskelFromCSV to include swapping direction of too many inputs into a node
 
@@ -845,10 +910,12 @@ def BNskelFromCSV (csvdata, targets):
 
     # target, each input
     edges = []
+    # structure = {}
     if len(inputVerts) > len(targets):
         for target in targets:
 
             for input in inputVerts:
+                # structure [input] = []
                 edge = [target, input]
                 edges.append(edge)
 
@@ -862,99 +929,101 @@ def BNskelFromCSV (csvdata, targets):
         BNstructure['E'] = edges
         skel.E = edges
 
+    # print ('edges\n ',edges)
+
     skel.toporder()
 
     return skel
 
-def from_data(structure, df):
-    """
-    Creates a BBN.
-
-    :param structure: A dictionary where keys are names of children and values are list of parent names.
-    :param df: A dataframe.
-    :return: BBN.
-    """
-
-    def get_profile(df):
-        profile = {}
-        for c in df.columns:
-            values = sorted(list(df[c].value_counts().index))
-            profile[c] = values
-        return profile
-
-    def get_n2i(parents):
-        g = nx.DiGraph()
-        for k in parents:
-            g.add_node(k)
-        for ch, pas in parents.items():
-            for pa in pas:
-                g.add_edge(pa, ch)
-        nodes = list(topological_sort(g))
-        return {n: i for i, n in enumerate(nodes)}
-
-    def get_cpt(name, parents, n2v, df):
-        parents = sorted(parents)
-        n2v = {k: sorted(v) for k, v in n2v.items()}
-
-        n = df.shape[0]
-
-        cpts = []
-        if len(parents) == 0:
-            for v in n2v[name]:
-                c = df[df[name] == v].shape[0]
-                p = c / n
-                cpts.append(p)
-        else:
-            domains = [(n, d) for n, d in n2v.items() if n in parents]
-            domains = sorted(domains, key=lambda tup: tup[0])
-            domain_names = [tup[0] for tup in domains]
-            domain_values = [tup[1] for tup in domains]
-            domains = list(product(*domain_values))
-
-            for values in domains:
-                probs = []
-                denom_q = ' and '.join([f'{n}=="{v}"' for n, v in zip(domain_names, values)])
-                for v in n2v[name]:
-                    numer_q = f'{name}=="{v}" and {denom_q}'
-
-                    numer = df.query(numer_q).shape[0] / n
-                    denom = df.query(denom_q).shape[0] / n
-
-                    if denom == 0:
-                        prob = 1e-5
-                    else:
-                        prob = numer / denom
-                    probs.append(prob)
-                probs = pd.Series(probs)
-                probs = probs / probs.sum()
-                probs = list(probs)
-                cpts.extend(probs)
-
-        return cpts
-
-    n2v = get_profile(df)
-    n2i = get_n2i(df)
-    n2c = {n: get_cpt(n, structure[n], n2v, df) for n in structure}
-
-    bbn = Bbn()
-
-    nodes = {}
-    for name in n2v:
-        idx = n2i[name]
-        values = n2v[name]
-        cpts = n2c[name]
-
-        v = Variable(idx, name, values)
-        node = BbnNode(v, cpts)
-        nodes[name] = node
-        bbn.add_node(node)
-
-    for ch, parents in structure.items():
-        ch_node = nodes[ch]
-        for pa in parents:
-            pa_node = nodes[pa]
-
-            edge = Edge(pa_node, ch_node, EdgeType.DIRECTED)
-            bbn.add_edge(edge)
-
-    return bbn
+# def from_data(structure, df):
+#     """
+#     Creates a BBN.
+#
+#     :param structure: A dictionary where keys are names of children and values are list of parent names.
+#     :param df: A dataframe.
+#     :return: BBN.
+#     """
+#
+#     def get_profile(df):
+#         profile = {}
+#         for c in df.columns:
+#             values = sorted(list(df[c].value_counts().index))
+#             profile[c] = values
+#         return profile
+#
+#     def get_n2i(parents):
+#         g = nx.DiGraph()
+#         for k in parents:
+#             g.add_node(k)
+#         for ch, pas in parents.items():
+#             for pa in pas:
+#                 g.add_edge(pa, ch)
+#         nodes = list(topological_sort(g))
+#         return {n: i for i, n in enumerate(nodes)}
+#
+#     def get_cpt(name, parents, n2v, df):
+#         parents = sorted(parents)
+#         n2v = {k: sorted(v) for k, v in n2v.items()}
+#
+#         n = df.shape[0]
+#
+#         cpts = []
+#         if len(parents) == 0:
+#             for v in n2v[name]:
+#                 c = df[df[name] == v].shape[0]
+#                 p = c / n
+#                 cpts.append(p)
+#         else:
+#             domains = [(n, d) for n, d in n2v.items() if n in parents]
+#             domains = sorted(domains, key=lambda tup: tup[0])
+#             domain_names = [tup[0] for tup in domains]
+#             domain_values = [tup[1] for tup in domains]
+#             domains = list(product(*domain_values))
+#
+#             for values in domains:
+#                 probs = []
+#                 denom_q = ' and '.join([f'{n}=="{v}"' for n, v in zip(domain_names, values)])
+#                 for v in n2v[name]:
+#                     numer_q = f'{name}=="{v}" and {denom_q}'
+#
+#                     numer = df.query(numer_q).shape[0] / n
+#                     denom = df.query(denom_q).shape[0] / n
+#
+#                     if denom == 0:
+#                         prob = 1e-5
+#                     else:
+#                         prob = numer / denom
+#                     probs.append(prob)
+#                 probs = pd.Series(probs)
+#                 probs = probs / probs.sum()
+#                 probs = list(probs)
+#                 cpts.extend(probs)
+#
+#         return cpts
+#
+#     n2v = get_profile(df)
+#     n2i = get_n2i(df)
+#     n2c = {n: get_cpt(n, structure[n], n2v, df) for n in structure}
+#
+#     bbn = Bbn()
+#
+#     nodes = {}
+#     for name in n2v:
+#         idx = n2i[name]
+#         values = n2v[name]
+#         cpts = n2c[name]
+#
+#         v = Variable(idx, name, values)
+#         node = BbnNode(v, cpts)
+#         nodes[name] = node
+#         bbn.add_node(node)
+#
+#     for ch, parents in structure.items():
+#         ch_node = nodes[ch]
+#         for pa in parents:
+#             pa_node = nodes[pa]
+#
+#             edge = Edge(pa_node, ch_node, EdgeType.DIRECTED)
+#             bbn.add_edge(edge)
+#
+#     return bbn

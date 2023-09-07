@@ -17,7 +17,7 @@ class BNdata:
         # if data is a filepath
         if isinstance(csvdata, str):
             dataset = []
-            with open(csvdata, 'rb') as csvfile:
+            with open(csvdata, 'rt') as csvfile:
                 lines = csv.reader(csvfile)
 
                 for row in lines:
