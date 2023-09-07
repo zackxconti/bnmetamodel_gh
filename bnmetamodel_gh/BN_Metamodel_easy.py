@@ -18,7 +18,7 @@ class BN_Metamodel_easy:
         self.numBinsDict = {} # declare as empty attribute
 
         # extract skeleton from csv
-        BNskel = BNskelFromCSV(csvdata, targets)
+        BNskel = BNskelFromCSVpybbn(csvdata, targets)
 
         if 'numBinsDict' in kwargs:
             self.numBinsDict = kwargs['numBinsDict']
@@ -26,10 +26,10 @@ class BN_Metamodel_easy:
         for var in self.variables:
             if var in targets:
                 self.binTypeDict [var]= 'e' # default: all distributions are discretized by equal spacing
-                self.numBinsDict [var] = 7 # default: all distributions have 6 bins by default
+                self.numBinsDict [var] = 5 # default: all distributions have 6 bins by default
             else:
                 self.binTypeDict [var]= 'e' # default: all distributions are discretized by equal spacing
-                self.numBinsDict [var] = 7 # default: all distributions have 6 bins by default
+                self.numBinsDict [var] = 5 # default: all distributions have 6 bins by default
 
         data = BNdata(csvdata=csvdata, targetlist=self.targets, binTypeDict=self.binTypeDict, numBinsDict=self.numBinsDict)
 
