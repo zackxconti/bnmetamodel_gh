@@ -1,6 +1,6 @@
-``bnmetamodel_gh.Metamodel_easy`` module
-========================================
+``bnmetamodel_gh.BN_Metamodel_easy`` module
+===========================================
 
-.. automodule:: bnmetamodel_gh.Metamodel_easy
+.. automodule:: bnmetamodel_gh.BN_Metamodel_easy
    :members:
    :undoc-members:
