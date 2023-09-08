@@ -20,10 +20,12 @@ class BayesianNetwork:
             print (" model data has been supplied ")
             #### modeldata should be in json dict format ####
             self.json_data = modeldata
+
+            #TODO: load learnedBaynet from data using pybbn
             # self.learnedBaynet = DiscreteBayesianNetwork()
-            self.nodes = modeldata['V']
-            self.edges = modeldata ['E']
-            self.Vdata = modeldata ['Vdata']
+            # self.nodes = modeldata['V']
+            # self.edges = modeldata ['E']
+            # self.Vdata = modeldata ['Vdata']
 
             self.targets = targetlist
             self.BinRanges = binranges
@@ -36,42 +38,40 @@ class BayesianNetwork:
             self.targets = BNdata.targets
 
             if isinstance(self.structure, str): # if structure is passed as a file path
+
+                #TODO: specify skeleton using pybbn
                 # load file into skeleton
-                skel = GraphSkeleton()
-                skel.load(self.structure)
-                skel.toporder()
-                self.skel = skel
+                # skel = GraphSkeleton()
+                # skel.load(self.structure)
+                # skel.toporder()
+                # self.skel = skel
+
             else:                               # if structure is passed as loaded graph skeleton
                 # given skel
                 self.skel = self.structure
 
-            # learn bayesian network
-            print ('building bayesian network ...')
+                # learn bayesian network
+                print ('building bayesian network ...')
 
-            binnedData = pd.DataFrame.from_dict(BNdata.binnedData)
-            baynet = Factory.from_data(netStructure, binnedData)
-            print('building junction tree ...')
-            # create join tree (this must be computed once)
-            self.join_tree = InferenceController.apply(baynet)
-            print("building junction tree is complete")
+                binnedData = BNdata.binnedData.map(str)
+                baynet = Factory.from_data(netStructure, binnedData)
 
-            # baynet = discrete_mle_estimateparams2(self.skel, BNdata.binnedDict)  # using discrete_mle_estimateparams2 written as function in this file, not calling from libpgm
-            # # TODO #36: Baynet might be redundant since we are building a junction tree
+                print('building junction tree ...')
+                # create join tree (this must be computed once)
+                self.join_tree = InferenceController.apply(baynet)
+                print("building junction tree is complete")
 
-            self.learnedBaynet = baynet
-            self.nodes = [node.variable.name for node in baynet.get_nodes()]
-            # self.edges = list(baynet.edges.values())
-            # self.Vdata = baynet.
-            # self.json_data = {'V': self.nodes, 'E': self.edges, 'Vdata': self.Vdata}
+                self.learnedBaynet = baynet
+                self.nodes = [node.variable.name for node in baynet.get_nodes()]
 
-            self.BinRanges = self.BNdata.binRanges
+                #TODO: get these properties from pybbn baynet
+                # self.edges = list(baynet.edges.values())
+                # self.Vdata = baynet.
+                # self.json_data = {'V': self.nodes, 'E': self.edges, 'Vdata': self.Vdata}
 
-            print ('building bayesian network complete')
+                self.BinRanges = self.BNdata.binRanges
 
-        # print ('json data ', self.json_data)
-        # create BN with pybbn
-        # bbn = Factory.from_libpgm_discrete_dictionary(self.json_data)
-
+                print ('building bayesian network complete')
 
     # def generate(self):  # need to modify to accept skel or skelfile
     #     baynet = discrete_mle_estimateparams2(self.skel, self.binnedData)  # using discrete_mle_estimateparams2 written as function in this file, not calling from libpgm
@@ -83,6 +83,7 @@ class BayesianNetwork:
     #     return baynet
 
     def getpriors (self):
+
         priorPDs = {}
 
         bincounts = self.BNdata.bincountsDict
@@ -763,8 +764,6 @@ class BayesianNetwork:
             for i in range(0, len(hardEvidence[var])):
                 if hardEvidence[var][i] == 1.0: formattedEvidence[var]=i
 
-        print ('formatted evidence ',formattedEvidence)
-
         # formattedEvidence = hardEvidence
 
         def potential_to_df(p):
@@ -781,17 +780,17 @@ class BayesianNetwork:
             for node in join_tree.get_bbn_nodes():
                 name = node.variable.name
                 df = potential_to_df(join_tree.get_bbn_potential(node))
-                print ('df potentials \n', df)
                 t = (name, df)
                 data.append(t)
             return data
 
         def pybbnToLibpgm_posteriors(pybbnPosteriors):
             posteriors = {}
-
+            print (pybbnPosteriors)
             for node in pybbnPosteriors:
                 var = node[0]
                 df = node[1]
+                # df.astype({"val":"int"})
                 p = df.sort_values(by=['val'])
                 posteriors[var] = p['p'].tolist()
 
@@ -803,17 +802,12 @@ class BayesianNetwork:
         for e in formattedEvidence.keys():
             ev = EvidenceBuilder() \
                 .with_node(self.join_tree.get_bbn_node_by_name(e)) \
-                .with_evidence(formattedEvidence[e], 1.0) \
+                .with_evidence(str(float(formattedEvidence[e])), 1.0) \
                 .build()
-
-            self.join_tree.unobserve_all()
-            self.join_tree.set_observation(ev)
             evidenceList.append(ev)
 
-        # self.join_tree.unobserve_all()
-        # self.join_tree.update_evidences(evidenceList)
-
-        print ('join tree \n', self.join_tree)
+        self.join_tree.unobserve_all()
+        self.join_tree.update_evidences(evidenceList)
 
         posteriors = potentials_to_dfs(self.join_tree)
 
@@ -824,10 +818,12 @@ class BayesianNetwork:
             numbins = len(self.BinRanges[posterior[0]])
 
             for i in range (0,numbins):
-                if float (i) not in posterior[1]['val'].tolist(): # if
+                if float (i) not in posterior[1]['val'].astype(float).tolist(): # if
                     #print 'bin number ', float(i) ,' was missing '
                     posterior[1].loc[len(posterior[1])] = [float(i), 0.0]
                     continue
+
+        print ('posteriors \n ', posteriors)
 
         posteriorsDict = pybbnToLibpgm_posteriors(posteriors)
         print ('inference is complete ... posterior distributions were generated successfully')
@@ -889,7 +885,6 @@ class BayesianNetwork:
         # the following checks for missing bins and adds them back
 
         for posterior in posteriors:
-            print ('posssssssterior ', posterior)
             numbins = len(self.BinRanges[posterior[0]])
 
             for i in range (0,numbins):

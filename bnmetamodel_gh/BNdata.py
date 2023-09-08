@@ -50,10 +50,10 @@ class BNdata:
         ## range discretization using minimum length description method
 
         #print 'binning data ...'
-        datadf, datadict, bincountsdict = discretize(self.data,self.binRanges,True)
+        datadict, datadf, bincountsdict = discretize(self.data,self.binRanges,True)
         #print 'binning data complete'
 
-        self.binnedDict, self.binnedData, self.bincountsDict = datadf, datadict, bincountsdict
+        self.binnedDict, self.binnedData, self.bincountsDict =  datadict, datadf, bincountsdict
 
     def loadFromCSV (self, header=False):
         # TODO #42: Refactor loadFromCSV to include k-fold code
@@ -140,4 +140,4 @@ class BNdata:
 
         print ('train binCountdict ', binCountsDict)
         print ('binned_trainingData ', binnedData)
-        return binnedData
+        return binnedData, binnedDf
