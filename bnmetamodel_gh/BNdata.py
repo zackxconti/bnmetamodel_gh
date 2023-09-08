@@ -1,6 +1,6 @@
 import csv
 import pandas as pd
-from Helper_functions import getBinRanges, discretize
+from .Helper_functions import getBinRanges, discretize
 import copy
 
 # TODO #41: Implement MDRM Sensitivity analysis as class
