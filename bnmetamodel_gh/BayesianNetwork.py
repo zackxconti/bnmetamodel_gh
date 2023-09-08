@@ -1,4 +1,4 @@
-from Helper_functions import *
+from .Helper_functions import *
 import pandas
 from pybbn.graph.jointree import EvidenceBuilder
 from pybbn.pptc.inferencecontroller import InferenceController
