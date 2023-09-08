@@ -1,6 +1,6 @@
-from BayesianNetwork import *
-from BNdata import *
-from Helper_functions import loadDataFromCSV
+from .BayesianNetwork import *
+from .BNdata import *
+from .Helper_functions import loadDataFromCSV
 
 class BN_Metamodel_easy:
 
