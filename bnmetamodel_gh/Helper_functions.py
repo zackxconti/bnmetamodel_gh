@@ -5,12 +5,6 @@ from sklearn.metrics import mean_squared_error
 from six import string_types
 import csv
 
-# libpgm imports
-# from libpgm.graphskeleton import GraphSkeleton
-# from libpgm.discretebayesiannetwork import DiscreteBayesianNetwork
-# from libpgm.tablecpdfactorization import TableCPDFactorization
-# from libpgm.pgmlearner import PGMLearner
-
 import itertools
 import json
 from itertools import product
@@ -35,128 +29,10 @@ import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
-
 import os
 import operator
 import re
 import networkx as nx
-
-
-# class GraphSkeleton(Dictionary):
-#     '''
-#     This class represents a graph skeleton, meaning a vertex set and a directed edge set. It contains the attributes *V* and *E*, and the methods *load*, *getparents*, *getchildren*, and *toporder*.
-#
-#     '''
-#
-#     def __init__(self):
-#         self.V = None
-#         '''A list of names of vertices.'''
-#         self.E = None
-#         '''A list of [origin, destination] pairs of vertices that constitute edges.'''
-#         self.alldata = None
-#         '''(Inherited from dictionary) A variable that stores a key-indexable dictionary once it is loaded from a file.'''
-#
-#     def load(self, path):
-#         '''
-#         Load the graph skeleton from a text file located at *path*.
-#
-#         Text file must be a plaintext .txt file with a JSON-style representation of a dict.  Dict must contain the top-level keys "V" and "E" with the following formats::
-#
-#             {
-#                 'V': ['<vertex_name_1>', ... , '<vertex_name_n'],
-#                 'E': [['vertex_of_origin', 'vertex_of_destination'], ... ]
-#             }
-#
-#         Arguments:
-#             1. *path* -- The path to the file containing input data (e.g., "mydictionary.txt").
-#
-#         Attributes modified:
-#             1. *V* -- The set of vertices.
-#             2. *E* -- The set of edges.
-#
-#         '''
-#         self.dictload(path)
-#         self.V = self.alldata["V"]
-#         self.E = self.alldata["E"]
-#
-#         # free unused memory
-#         del self.alldata
-#
-#     def getparents(self, vertex):
-#         '''
-#         Return the parents of *vertex* in the graph skeleton.
-#
-#         Arguments:
-#             1. *vertex* -- The name of the vertex whose parents the function finds.
-#
-#         Returns:
-#             A list containing the names of the parents of the vertex.
-#
-#         '''
-#         assert (vertex in self.V), "The graph skeleton does not contain this vertex."
-#
-#         parents = []
-#         for pair in self.E:
-#             if (pair[1] == vertex):
-#                 parents.append(pair[0])
-#         return parents
-#
-#     def getchildren(self, vertex):
-#         '''
-#         Return the children of *vertex* in the graph skeleton.
-#
-#         Arguments:
-#             1. *vertex* -- The name of the vertex whose children the function finds.
-#
-#         Returns:
-#             A list containing the names of the children of the vertex.
-#
-#         '''
-#         assert (vertex in self.V), "The graph skeleton does not contain this vertex."
-#
-#         children = []
-#         for pair in self.E:
-#             if (pair[0] == vertex):
-#                 children.append(pair[1])
-#         return children
-#
-#     def toporder(self):
-#         '''
-#         Modify the vertices of the graph skeleton such that they are in topological order.
-#
-#         A topological order is an order of vertices such that if there is an edge from *u* to *v*, *u* appears before *v* in the ordering. It works only for directed ayclic graphs.
-#
-#         Attributes modified:
-#             1. *V* -- The names of the vertices are put in topological order.
-#
-#         The function also checks for cycles in the graph, and returns an error if one is found.
-#
-#         '''
-#         Ecopy = [x[:] for x in self.E]
-#         roots = []
-#         toporder = []
-#
-#         for vertex in self.V:
-#             # find roots
-#             if (self.getparents(vertex) == []):
-#                 roots.append(vertex)
-#
-#         while roots != []:
-#             n = roots.pop()
-#             toporder.append(n)
-#             for edge in reversed(Ecopy):
-#                 if edge[0] == n:
-#                     m = edge[1]
-#                     Ecopy.remove(edge)
-#                     yesparent = False
-#                     for e in Ecopy:
-#                         if e[1] == m:
-#                             yesparent = True
-#                             break
-#                     if yesparent == False:
-#                         roots.append(m)
-#         assert (not Ecopy), ("Graph contains a cycle", Ecopy)
-#         self.V = toporder
 
 
 def discrete_estimatebn( learner, data, skel, pvalparam=.05, indegree=0.5):

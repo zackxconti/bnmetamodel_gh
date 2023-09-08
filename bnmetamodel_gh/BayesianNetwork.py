@@ -8,6 +8,7 @@ import pandas as pd
 import copy
 from sklearn.model_selection import KFold
 
+
 class BayesianNetwork:
 
     def __init__(self, BNdata=None, netStructure=None, modeldata=None, targetlist=None, binranges=None, priors=None):
@@ -40,11 +41,12 @@ class BayesianNetwork:
             if isinstance(self.structure, str): # if structure is passed as a file path
 
                 #TODO: specify skeleton using pybbn
+
                 # load file into skeleton
-                # skel = GraphSkeleton()
-                # skel.load(self.structure)
-                # skel.toporder()
-                # self.skel = skel
+                skel = GraphSkeleton()
+                skel.load(self.structure)
+                skel.toporder()
+                self.skel = skel
 
             else:                               # if structure is passed as loaded graph skeleton
                 # given skel
