@@ -1,6 +1,6 @@
-from BayesianNetwork import *
-from BNdata import *
-from Helper_functions import loadDataFromCSV
+from .BayesianNetwork import *
+from .BNdata import *
+from .Helper_functions import loadDataFromCSV
 
 class BN_Metamodel_easy:
 
@@ -18,18 +18,20 @@ class BN_Metamodel_easy:
         self.numBinsDict = {} # declare as empty attribute
 
         # extract skeleton from csv
-        BNskel = BNskelFromCSV(csvdata, targets)
+        BNskel = BNskelFromCSVpybbn(csvdata, targets)
+
+        print ('skeleton from data \n ',BNskel)
 
         if 'numBinsDict' in kwargs:
             self.numBinsDict = kwargs['numBinsDict']
 
         for var in self.variables:
             if var in targets:
-                self.binTypeDict [var]= 'e' # default: all distributions are discretized by equal spacing
-                self.numBinsDict [var] = 7 # default: all distributions have 6 bins by default
+                self.binTypeDict [var]= 'p' # default: all distributions are discretized by equal spacing
+                self.numBinsDict [var] = 6 # default: all distributions have 6 bins by default
             else:
                 self.binTypeDict [var]= 'e' # default: all distributions are discretized by equal spacing
-                self.numBinsDict [var] = 7 # default: all distributions have 6 bins by default
+                self.numBinsDict [var] = 6 # default: all distributions have 6 bins by default
 
         data = BNdata(csvdata=csvdata, targetlist=self.targets, binTypeDict=self.binTypeDict, numBinsDict=self.numBinsDict)
 
@@ -44,12 +46,12 @@ class BN_Metamodel_easy:
     def changeNumBinsDict (dict):
         BN_Metamodel_easy.numBinsDict = dict
 
-    def inferPD_JT_soft(self, query, softevidence):
+    def inferPD_JT_soft(self, softevidence):
         posteriors = self.learnedBaynet.inferPD_JT_soft(softevidence)
         self.learnedBaynet.plotPDs(xlabel='Ranges ', ylabel='Probability',maintitle='Posterior Distributions',displayplt=True, posteriorPD=posteriors, evidence=softevidence.keys())
         return posteriors
 
-    def inferPD_JT_hard(self, query, hardevidence):
+    def inferPD_JT_hard(self, hardevidence):
         posteriors = self.learnedBaynet.inferPD_JT_hard(hardevidence)
         self.learnedBaynet.plotPDs(xlabel='Ranges ', ylabel='Probability',maintitle='Posterior Distributions',displayplt=True, posteriorPD=posteriors, evidence=hardevidence.keys())
         return posteriors
