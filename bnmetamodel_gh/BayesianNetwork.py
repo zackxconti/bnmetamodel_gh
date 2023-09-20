@@ -47,8 +47,6 @@ class BayesianNetwork:
     verbose : bool, optional
         Whether to print the progress of the learning process, by default
         False.
-    priors : _type_, optional
-        The priors of the Bayesian Network, by default None.
     """
 
     def __init__(
@@ -59,7 +57,7 @@ class BayesianNetwork:
         targetlist: Optional[List] = None,
         binranges: Optional[Any] = None,  # TODO: add type (replace Any)
         verbose: Optional[bool] = False,
-        # priors: Optional[Any] = None,  # TODO: can be removed (not in use)
+        # priors: Optional[Any] = None,  # INFO: removed (not in use)
     ):
         """
         Constructor of the BayesianNetwork class.
