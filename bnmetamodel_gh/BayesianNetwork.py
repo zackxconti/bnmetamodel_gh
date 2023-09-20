@@ -14,15 +14,18 @@ from .Helper_functions import (
 )
 from .BNdata import BNdata
 
-import pandas
+import copy
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
 from pybbn.graph.jointree import EvidenceBuilder
 from pybbn.pptc.inferencecontroller import InferenceController
 from pybbn.graph.factory import Factory
 from pybbn.graph.jointree import EvidenceType
-import pandas as pd
-import copy
+
 from sklearn.model_selection import KFold
-import matplotlib.pyplot as plt
+
 from typing import Any, List, Optional, Tuple
 
 
@@ -342,7 +345,7 @@ class BayesianNetwork:
                 "Distance Error",
             ]
             df_indices = ["Fold_%s" % (num + 1) for num in range(numFolds)]
-            error_df = pandas.DataFrame(index=df_indices, columns=df_columns)
+            error_df = pd.DataFrame(index=df_indices, columns=df_columns)
             error_df = error_df.fillna(0.0)
             error_df["Distance Error"] = error_df["Distance Error"].astype(
                 object
@@ -511,7 +514,7 @@ class BayesianNetwork:
                 "Distance Error",
             ]
             df_indices = [0]
-            error_df = pandas.DataFrame(index=df_indices, columns=df_columns)
+            error_df = pd.DataFrame(index=df_indices, columns=df_columns)
             error_df = error_df.fillna(0.0)
             dist_err = error_df["Distance Error"].astype(object)
             class_err = error_df["Classification Error"].astype(object)
