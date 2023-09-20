@@ -1,15 +1,14 @@
 __all__ = [
     "BayesianNetwork",
-    "potential_to_df",
-    "potentials_to_dfs",
-    "pybbnToLibpgm_posteriors",
 ]
 
 from .Helper_functions import (
     discretize,
     generateErrors,
     kfoldToDF,
+    potentials_to_dfs,
     printdist,
+    pybbnToLibpgm_posteriors,
     without_keys,
 )
 from .BNdata import BNdata
@@ -824,82 +823,3 @@ class BayesianNetwork:
                 print(f"{item} -- {allevidence[item]}")
 
         return allevidence
-
-
-def potential_to_df(p) -> pd.DataFrame:
-    """
-    Generates a dataframe from a potential.
-
-    Parameters
-    ----------
-    p : _type_
-        _description_
-
-    Returns
-    -------
-    pandas.DataFrame
-        _description_
-    """
-    data = []
-    for pe in p.entries:
-        v = list(pe.entries.values())[0]
-        p = pe.value
-        t = (v, p)
-        data.append(t)
-    return pd.DataFrame(data, columns=["val", "p"])
-
-
-def potentials_to_dfs(
-    join_tree, verbose: Optional[bool] = False
-) -> List[Tuple[str, pd.DataFrame]]:
-    """
-    Generates a list of dataframes from a join tree.
-
-    Parameters
-    ----------
-    join_tree : _type_
-        _description_
-
-    Returns
-    -------
-    list[tuple[str, pandas.DataFrame]]
-        A list of tuples, consisting of the variable name and the
-        adjoining dataframe. TODO: Contains posteriors + evidence
-        distributions?
-    """
-    data = []
-    for node in join_tree.get_bbn_nodes():
-        name = node.variable.name
-        df = potential_to_df(join_tree.get_bbn_potential(node))
-        if verbose:
-            print(f"df potentials \n{df}")
-        t = (name, df)
-        data.append(t)
-    return data
-
-
-def pybbnToLibpgm_posteriors(
-    pybbnPosteriors: List[Tuple[str, pd.DataFrame]]
-) -> dict:
-    """
-    Converts pybbn posteriors to libpgm posteriors.
-
-    Parameters
-    ----------
-    pybbnPosteriors : list[tuple[str, pd.DataFrame]]
-        _description_
-
-    Returns
-    -------
-    dict
-        A dictionary of dataframes.
-    """
-    posteriors = {}
-
-    for node in pybbnPosteriors:
-        var = node[0]
-        df = node[1]
-        p = df.sort_values(by=["val"])
-        posteriors[var] = p["p"].tolist()
-
-    return posteriors  # returns a dictionary of dataframes
