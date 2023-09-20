@@ -7,7 +7,7 @@ import copy
 
 import pandas as pd
 
-from typing import Any, List, Union
+from typing import Any, List, Optional, Union
 
 # TODO #41: Implement MDRM Sensitivity analysis as class
 
@@ -26,6 +26,8 @@ class BNdata:
         _description_
     numBinsDict : dict
         _description_
+    verbose : bool, optional
+        Whether to print the progress of the learning process.
     """
 
     def __init__(
@@ -34,6 +36,7 @@ class BNdata:
         targetlist: Any,  # TODO: fix type
         binTypeDict: dict,
         numBinsDict: dict,
+        verbose: Optional[bool] = False,
     ):
         """
         Constructor of the BNdata class.
@@ -44,6 +47,7 @@ class BNdata:
                 "Passed csvdata must be string or list of strings."
             )
 
+        self.verbose = verbose
         self.targets = targetlist
         self.numBinsDict = numBinsDict
         self.binTypeDict = binTypeDict
@@ -239,8 +243,9 @@ class BNdata:
         # a list of dictionaries
         self.binnedData = binnedDf.to_dict(orient="records")
 
-        # debug messages
-        print(f"train binCountdict: {binCountsDict}")
-        print(f"binned_trainingData: {self.binnedData}")
+        if self.verbose:
+            # debug messages
+            print(f"train binCountdict: {binCountsDict}")
+            print(f"binned_trainingData: {self.binnedData}")
 
         return self.binnedData

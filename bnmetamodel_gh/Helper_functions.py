@@ -147,7 +147,7 @@ def percentile_bins(array: List, numBins: int) -> List[List[float]]:
     bin_ranges = []
     for i in range(0, numBins):
         p_min = round((np.percentile(a, (percentage * i))), 20)
-        # print (f"p_min {p_min}")
+        # print(f"p_min {p_min}")
         bin_widths.append(p_min)
         p_max = round((np.percentile(a, (percentage * (i + 1)))), 20)
         # print(f"p_max {p_max}")
@@ -399,14 +399,14 @@ def discretize(
                     # num and less or equal than max num (basically, include
                     # min num)
                     if binRange[0] <= item1 <= binRange[1]:
-                        # print item1,' is binned within ',binRange
+                        # print(f"{item1} is binned within {binRange}")
                         binnedDf.iloc[index][varName] = i
                         binCountsDict[varName][i][0] += 1
                 else:
                     # this is not first bin bin numbers less or equal to max
                     # num
                     if binRange[0] < item1 <= binRange[1]:
-                        # print item1,' is binned within ',binRange
+                        # print(f"{item1} is binned within {binRange}")
                         binnedDf.iloc[index][varName] = i
                         binCountsDict[varName][i][0] += 1
 
@@ -700,7 +700,7 @@ def BNskelFromCSVpybbn(
         # BNstructure['E'] = edges
         # skel.E = edges
 
-    # print ('edges\n ',edges)
+    # print('edges\n ',edges)
 
     # skel.toporder()
 

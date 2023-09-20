@@ -44,6 +44,9 @@ class BayesianNetwork:
         The list of targets of the Bayesian Network, by default None.
     binranges : _type_, optional
         The bin ranges of the Bayesian Network, by default None.
+    verbose : bool, optional
+        Whether to print the progress of the learning process, by default
+        False.
     priors : _type_, optional
         The priors of the Bayesian Network, by default None.
     """
@@ -55,14 +58,18 @@ class BayesianNetwork:
         modeldata: Optional[dict] = None,
         targetlist: Optional[List] = None,
         binranges: Optional[Any] = None,  # TODO: add type (replace Any)
+        verbose: Optional[bool] = False,
         # priors: Optional[Any] = None,  # TODO: can be removed (not in use)
     ):
         """
         Constructor of the BayesianNetwork class.
         """
+        self.verbose = verbose
+
         if modeldata is not None:
             # Load model from already built BN
-            print("model data has been supplied")
+            if self.verbose:
+                print("model data has been supplied")
             self.json_data = modeldata
             # self.learnedBaynet = DiscreteBayesianNetwork()
             self.nodes = modeldata["V"]
@@ -73,7 +80,8 @@ class BayesianNetwork:
             self.BinRanges = binranges
         else:
             # Build new model from data supplied via BNdata and netStructure
-            print("model data has not been supplied")
+            if self.verbose:
+                print("model data has not been supplied")
             self.BNdata = BNdata
             self.structure = netStructure
             self.targets = BNdata.targets
@@ -92,22 +100,26 @@ class BayesianNetwork:
                 self.skel = self.structure
 
             # learn bayesian network
-            print("building bayesian network ...")
+            if self.verbose:
+                print("building bayesian network ...")
 
             binnedData = pd.DataFrame.from_dict(BNdata.binnedData)
             baynet = Factory.from_data(netStructure, binnedData)
 
             # create join tree (this must be computed once)
-            print("--> building junction tree ...")
+            if self.verbose:
+                print("--> building junction tree ...")
             self.join_tree = InferenceController.apply(baynet)
-            print("--> building junction tree is complete")
+            if self.verbose:
+                print("--> building junction tree is complete")
 
             self.learnedBaynet = baynet
             self.nodes = [node.variable.name for node in baynet.get_nodes()]
 
             self.BinRanges = self.BNdata.binRanges
 
-            print("building bayesian network complete")
+            if self.verbose:
+                print("building bayesian network complete")
 
     def getpriors(self) -> dict:
         """
@@ -164,7 +176,8 @@ class BayesianNetwork:
         """
         # set the number of columns and rows and dimensions of the figure
         n_totalplots = len(self.nodes)
-        print("num of total plots ", n_totalplots)
+        if self.verbose:
+            print("num of total plots ", n_totalplots)
 
         if n_totalplots <= 4:
             n_cols = n_totalplots
@@ -172,7 +185,8 @@ class BayesianNetwork:
         else:
             n_cols = 4
             n_rows = n_totalplots % 4
-            print(f"num rows {n_rows}")
+            if self.verbose:
+                print(f"num rows {n_rows}")
 
         if n_rows == 0:
             n_rows = n_totalplots / 4
@@ -350,7 +364,8 @@ class BayesianNetwork:
         for training_index, testing_index in kf.split(self.BNdata.data):
             # loop through all data and split into training and testing for
             # each fold
-            print(f"-------- FOLD NUMBER {fold_counter + 1} ----")
+            if self.verbose:
+                print(f"-------- FOLD NUMBER {fold_counter + 1} ----")
 
             trainingData = kfoldToDF(training_index, self.BNdata.data)
             testingData = kfoldToDF(testing_index, self.BNdata.data)
@@ -607,7 +622,8 @@ class BayesianNetwork:
         # converts libpgm to pybnn then use pybnn to run junction tree and
         # then spitback out results for visualising
 
-        print("performing inference using junction tree algorithm ...")
+        if self.verbose:
+            print("performing inference using junction tree algorithm ...")
 
         # convert libpgm evidence to pybbn evidence
         formattedEvidence = {}
@@ -616,7 +632,8 @@ class BayesianNetwork:
                 if hardEvidence[var][i] == 1.0:
                     formattedEvidence[var] = i
 
-        print(f"formatted evidence {formattedEvidence}")
+        if self.verbose:
+            print(f"formatted evidence {formattedEvidence}")
 
         # formattedEvidence = hardEvidence
 
@@ -638,9 +655,10 @@ class BayesianNetwork:
         # self.join_tree.unobserve_all()
         # self.join_tree.update_evidences(evidenceList)
 
-        print(f"join tree \n{self.join_tree}")
+        if self.verbose:
+            print(f"join tree \n{self.join_tree}")
 
-        posteriors = potentials_to_dfs(self.join_tree)
+        posteriors = potentials_to_dfs(self.join_tree, self.verbose)
 
         # join tree algorithm seems to eliminate bins whose posterior
         # probabilities are zero
@@ -656,8 +674,9 @@ class BayesianNetwork:
                     continue
 
         posteriorsDict = pybbnToLibpgm_posteriors(posteriors)
-        print("inference is complete")
-        print("posterior distributions were generated successfully")
+        if self.verbose:
+            print("inference is complete")
+            print("posterior distributions were generated successfully")
 
         return posteriorsDict
 
@@ -680,7 +699,8 @@ class BayesianNetwork:
 
         # TODO #40: Find way to enter probabilities and convert them to likelihoods in inferPD_JT_soft
 
-        print("performing inference using junction tree algorithm ...")
+        if self.verbose:
+            print("performing inference using junction tree algorithm ...")
 
         evidenceList = []
 
@@ -701,14 +721,15 @@ class BayesianNetwork:
         self.join_tree.update_evidences(evidenceList)
 
         # contains posteriors + evidence distributions
-        posteriors = potentials_to_dfs(self.join_tree)
+        posteriors = potentials_to_dfs(self.join_tree, self.verbose)
 
         # join tree algorithm seems to eliminate bins whose posterior
         # probabilities are zero
         # the following checks for missing bins and adds them back
 
         for posterior in posteriors:
-            print("posssssssterior ", posterior)
+            if self.verbose:
+                print("posssssssterior ", posterior)
             numbins = len(self.BinRanges[posterior[0]])
 
             for i in range(0, numbins):
@@ -719,8 +740,9 @@ class BayesianNetwork:
 
         posteriorsDict = pybbnToLibpgm_posteriors(posteriors)
 
-        print("inference is complete")
-        print("posterior distributions were generated successfully")
+        if self.verbose:
+            print("inference is complete")
+            print("posterior distributions were generated successfully")
 
         # posteriors + evidence distributions (for visualising)
         return posteriorsDict
@@ -796,8 +818,9 @@ class BayesianNetwork:
                     ):
                         allevidence[var][index] = 1.0
 
-        for item in allevidence:
-            print(f"{item} -- {allevidence[item]}")
+        if self.verbose:
+            for item in allevidence:
+                print(f"{item} -- {allevidence[item]}")
 
         return allevidence
 
@@ -825,7 +848,9 @@ def potential_to_df(p) -> pd.DataFrame:
     return pd.DataFrame(data, columns=["val", "p"])
 
 
-def potentials_to_dfs(join_tree) -> List[Tuple[str, pd.DataFrame]]:
+def potentials_to_dfs(
+    join_tree, verbose: Optional[bool] = False
+) -> List[Tuple[str, pd.DataFrame]]:
     """
     Generates a list of dataframes from a join tree.
 
@@ -845,7 +870,8 @@ def potentials_to_dfs(join_tree) -> List[Tuple[str, pd.DataFrame]]:
     for node in join_tree.get_bbn_nodes():
         name = node.variable.name
         df = potential_to_df(join_tree.get_bbn_potential(node))
-        print(f"df potentials \n{df}")
+        if verbose:
+            print(f"df potentials \n{df}")
         t = (name, df)
         data.append(t)
     return data

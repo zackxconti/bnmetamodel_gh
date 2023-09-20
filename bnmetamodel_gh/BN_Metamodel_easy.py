@@ -4,7 +4,7 @@ from .BayesianNetwork import BayesianNetwork
 from .BNdata import BNdata
 from .Helper_functions import BNskelFromCSVpybbn, loadDataFromCSV
 
-from typing import List, Any
+from typing import Any, List, Optional
 
 
 class BN_Metamodel_easy:
@@ -17,6 +17,9 @@ class BN_Metamodel_easy:
         The path to the csv file containing the data.
     targets : list
         A list of the target variables.
+    verbose : bool, optional
+        Whether to print the progress of the learning process. The default is
+        False.
     **kwargs : dict
         Keyword arguments.
     """
@@ -25,6 +28,7 @@ class BN_Metamodel_easy:
         self,
         csvdata: str,
         targets: List[Any],  # TODO: fix typing to remove Any
+        verbose: Optional[bool] = False,
         **kwargs
     ):
         """
@@ -38,6 +42,7 @@ class BN_Metamodel_easy:
         # 4) prepares data usin BNdata
         # 5) builds BN (data, skel)
 
+        self.verbose = verbose
         self.targets = targets
         self.variables = loadDataFromCSV(csvdata, True)[0]  # load data
         self.binTypeDict = {}
@@ -69,9 +74,12 @@ class BN_Metamodel_easy:
             targetlist=self.targets,
             binTypeDict=self.binTypeDict,
             numBinsDict=self.numBinsDict,
+            verbose=self.verbose,
         )
 
-        self.learnedBaynet = BayesianNetwork(BNdata=data, netStructure=BNskel)
+        self.learnedBaynet = BayesianNetwork(
+            BNdata=data, netStructure=BNskel, verbose=self.verbose
+        )
 
     def json(self) -> dict:
         """
