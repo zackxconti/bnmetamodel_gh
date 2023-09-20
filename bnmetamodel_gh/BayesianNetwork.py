@@ -25,7 +25,7 @@ from pybbn.graph.jointree import EvidenceType
 
 from sklearn.model_selection import KFold
 
-from typing import Any, List, Optional, Tuple
+from typing import Any, List, Optional
 
 
 class BayesianNetwork:
