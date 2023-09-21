@@ -9,4 +9,3 @@ API Documentation
    BN_Metamodel_easy
    BNdata
    Helper_functions
-   other_functions
