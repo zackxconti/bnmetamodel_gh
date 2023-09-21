@@ -760,6 +760,7 @@ class BayesianNetwork:
             Example of a range of interest:
 
             .. code-block:: json
+
                 {
                     v1: [min, max],
                     v2: [min, max]
