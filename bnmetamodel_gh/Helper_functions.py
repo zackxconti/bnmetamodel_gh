@@ -23,7 +23,7 @@ import numpy as np
 import pandas as pd
 import sklearn
 
-from typing import Any, List, Tuple, Union
+from typing import Any, List, Optional, Tuple, Union
 
 import matplotlib
 
