@@ -19,15 +19,17 @@ import itertools
 import math
 import operator
 
-import matplotlib
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import sklearn
 
 from typing import Any, List, Tuple, Union
 
+import matplotlib
+
 matplotlib.use("TkAgg")
+
+import matplotlib.pyplot as plt
 
 
 def loadDataFromCSV(csv_file_path: str, header: bool = False) -> List[Any]:
