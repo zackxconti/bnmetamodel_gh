@@ -106,6 +106,11 @@ class BNdata:
             Whether the CSV has a header row. If True, the first row will be
             treated as column names.
 
+        Attributes Updated
+        ------------------
+        data : list
+            List of lists containing the data from the CSV file.
+
         Returns
         -------
         list
@@ -113,13 +118,8 @@ class BNdata:
             list corresponds to a row in the CSV. If the `header` is set to
             True, the first inner list will be column names.
 
-        Attributes Updated
-        ------------------
-        data : list
-            List of lists containing the data from the CSV file.
-
-        Examples
-        --------
+        Example
+        -------
         >>> model = BNdata('path_to_file.csv', targetlist=..., binTypeDict=..., numBinsDict=...)
         >>> data = model.loadFromCSV(header=True)
         >>> print(data[0])  # This should print the column names if header=True
@@ -191,7 +191,7 @@ class BNdata:
 
         Examples
         --------
-        >>> model = SomeClassWithThisMethod('path_to_data.csv')
+        >>> model = BNdata('path_to_data.csv')
         >>> bin_ranges = {
         ...     "variable1": [[0, 10], [10, 20]],
         ...     "variable2": [[0, 0.5], [0.5, 1]],
