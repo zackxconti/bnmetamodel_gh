@@ -102,9 +102,9 @@ class BNdata:
 
         Parameters
         ----------
-        header : bool, optional (default=False)
+        header : bool, optional
             Whether the CSV has a header row. If True, the first row will be
-            treated as column names.
+            treated as column names. Default is False.
 
         Attributes Updated
         ------------------
@@ -171,23 +171,23 @@ class BNdata:
             lists of ranges (where each range is itself a list of two values:
             the start and end of the range).
 
-        plot : bool, optional (default=False)
+        plot : bool, optional
             If set to True, plots will be generated during the discretization
-            process.
+            process. Default is False.
 
             NOTE: Although the parameter exists in the method signature, its
             current implementation does not generate any plots.
+
+        Attributes Updated
+        ------------------
+        binnedData : List[dict]
+            Updated with the discretized data.
 
         Returns
         -------
         List[dict]
             List of dictionaries where each dictionary corresponds to a row in
             the discretized DataFrame.
-
-        Attributes Updated
-        ------------------
-        binnedData : List[dict]
-            Updated with the discretized data.
 
         Examples
         --------
