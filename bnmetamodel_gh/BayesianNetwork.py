@@ -757,22 +757,22 @@ class BayesianNetwork:
             Human evidence in the form of a dictionary, structured either as
             ranges of interest or hard numbers.
 
-            Example of a range of interest:
+            Example of a range of interest (min, max values in a list):
 
             .. code-block:: json
 
                 {
-                    v1: [min, max],
-                    v2: [min, max]
+                    "v1": [10, 20],
+                    "v2": [20, 40]
                 }
 
-            Example of hard numbers:
+            Example of hard numbers as values:
 
             .. code-block:: json
 
                 {
-                    v1: [val],
-                    v2: [val]
+                    "v1": [10],
+                    "v2": [30]
                 }
 
         Returns
@@ -785,13 +785,10 @@ class BayesianNetwork:
             .. code-block:: json
 
                 {
-                    v1: [0.0, 1.0, 0.2],
-                    v2: [0.1, 0.5, 1.0],
-                    ...
+                    "v1": [0.0, 1.0, 0.2],
+                    "v2": [0.1, 0.5, 1.0],
                 }
         """
-        # humanEvidence can
-
         allevidence = {}
 
         ranges = self.BinRanges
