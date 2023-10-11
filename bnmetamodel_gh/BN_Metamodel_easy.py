@@ -61,13 +61,13 @@ class BN_Metamodel_easy:
                 self.binTypeDict[var] = "e"
 
                 # default: all distributions have 6 bins by default
-                self.numBinsDict[var] = 5
+                self.numBinsDict[var] = 6
             else:
                 # default: all distributions are discretized by equal spacing
                 self.binTypeDict[var] = "e"
 
                 # default: all distributions have 6 bins by default
-                self.numBinsDict[var] = 5
+                self.numBinsDict[var] = 6
 
         data = BNdata(
             csvdata=csvdata,
