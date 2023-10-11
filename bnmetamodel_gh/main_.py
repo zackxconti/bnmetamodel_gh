@@ -16,7 +16,6 @@ b = BN_Metamodel_easy.BN_Metamodel_easy(csvfilepath, ['deflection'])
 # Generate a bnmetamodel as a function of the wrapper
 bn = b.generate()
 
-### NERVI PROBLEM ###
 # evidence= {'Height':0, 'Amplitude':0, 'Beam_tip_depth':0, 'Beam_start_depth':0, 'bc_X_position':0, 'Span':0}
 # evidence = {'Height':[1.0, 0.0, 0.0, 0.0, 0.0], 'Amplitude':[1.0, 0.0, 0.0, 0.0, 0.0], 'Beam_tip_depth':[1.0, 0.0, 0.0, 0.0, 0.0], 'Beam_start_depth':[1.0, 0.0, 0.0, 0.0, 0.0], 'bc_X_position':[1.0, 0.0, 0.0, 0.0, 0.0], 'Span':[1.0, 0.0, 0.0, 0.0, 0.0]}
 #evidence = {'deflection':[0.5, 0.5, 0.0, 0.0, 0.0], 'weight':[0.5, 0.5, 0.0, 0.0, 0.0] }
