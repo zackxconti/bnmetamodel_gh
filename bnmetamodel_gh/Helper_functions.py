@@ -12,7 +12,6 @@ __all__ = [
     "BNskelFromCSVpybbn",
 ]
 
-
 import copy
 import csv
 import itertools

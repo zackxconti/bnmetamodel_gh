@@ -71,10 +71,12 @@ class BayesianNetwork:
             if self.verbose:
                 print("model data has been supplied")
             self.json_data = modeldata
+
+            #TODO: load learnedBaynet from data using pybbn
             # self.learnedBaynet = DiscreteBayesianNetwork()
-            self.nodes = modeldata["V"]
-            self.edges = modeldata["E"]
-            self.Vdata = modeldata["Vdata"]
+            # self.nodes = modeldata['V']
+            # self.edges = modeldata ['E']
+            # self.Vdata = modeldata ['Vdata']
 
             self.targets = targetlist
             self.BinRanges = binranges
@@ -103,7 +105,7 @@ class BayesianNetwork:
             if self.verbose:
                 print("building bayesian network ...")
 
-            binnedData = pd.DataFrame.from_dict(BNdata.binnedData)
+            binnedData = BNdata.binnedData.map(str)
             baynet = Factory.from_data(netStructure, binnedData)
 
             # create join tree (this must be computed once)
@@ -115,6 +117,11 @@ class BayesianNetwork:
 
             self.learnedBaynet = baynet
             self.nodes = [node.variable.name for node in baynet.get_nodes()]
+
+                #TODO: get these properties from pybbn baynet
+                # self.edges = list(baynet.edges.values())
+                # self.Vdata = baynet.
+                # self.json_data = {'V': self.nodes, 'E': self.edges, 'Vdata': self.Vdata}
 
             self.BinRanges = self.BNdata.binRanges
 
@@ -641,22 +648,14 @@ class BayesianNetwork:
         evidenceList = []
 
         for e in formattedEvidence.keys():
-            ev = (
-                EvidenceBuilder()
-                .with_node(self.join_tree.get_bbn_node_by_name(e))
-                .with_evidence(formattedEvidence[e], 1.0)
+            ev = EvidenceBuilder() \
+                .with_node(self.join_tree.get_bbn_node_by_name(e)) \
+                .with_evidence(str(float(formattedEvidence[e])), 1.0) \
                 .build()
-            )
-
-            self.join_tree.unobserve_all()
-            self.join_tree.set_observation(ev)
             evidenceList.append(ev)
 
-        # self.join_tree.unobserve_all()
-        # self.join_tree.update_evidences(evidenceList)
-
-        if self.verbose:
-            print(f"join tree \n{self.join_tree}")
+        self.join_tree.unobserve_all()
+        self.join_tree.update_evidences(evidenceList)
 
         posteriors = potentials_to_dfs(self.join_tree, self.verbose)
 
@@ -672,6 +671,8 @@ class BayesianNetwork:
                     # print 'bin number ', float(i) ,' was missing '
                     posterior[1].loc[len(posterior[1])] = [float(i), 0.0]
                     continue
+
+        print ('posteriors \n ', posteriors)
 
         posteriorsDict = pybbnToLibpgm_posteriors(posteriors)
         if self.verbose:
