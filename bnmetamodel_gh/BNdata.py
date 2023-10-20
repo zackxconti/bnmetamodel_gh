@@ -1,23 +1,61 @@
+__all__ = ["BNdata"]
+
+from .Helper_functions import discretize, getBinRanges
+
 import csv
-import pandas as pd
-from .Helper_functions import getBinRanges, discretize
 import copy
+
+import pandas as pd
+
+from typing import Any, List, Optional, Union
 
 # TODO #41: Implement MDRM Sensitivity analysis as class
 
-class BNdata:
 
-    def __init__(self, csvdata, targetlist, binTypeDict, numBinsDict ): # data can either be specified by file path or by list
+class BNdata:
+    """
+    Class for loading and discretizing data for use in Bayesian Networks.
+
+    Arguments
+    ---------
+    csvdata : str | list[str]
+        _description_
+    targetlist : any  # TODO: fix type
+        _description_
+    binTypeDict : dict
+        _description_
+    numBinsDict : dict
+        _description_
+    verbose : bool, optional
+        Whether to print the progress of the learning process.
+    """
+
+    def __init__(
+        self,
+        csvdata: Union[str, List[str]],
+        targetlist: Any,  # TODO: fix type
+        binTypeDict: dict,
+        numBinsDict: dict,
+        verbose: Optional[bool] = False,
+    ):
+        """
+        Constructor of the BNdata class.
+        """
+        # data can either be specified by file path or by list
+        if not isinstance(csvdata, str) or isinstance(csvdata, list):
+            raise SyntaxError(
+                "Passed csvdata must be string or list of strings."
+            )
+
+        self.verbose = verbose
         self.targets = targetlist
         self.numBinsDict = numBinsDict
         self.binTypeDict = binTypeDict
 
-        #print 'importing data from csv file ...'
-
-        # if data is a filepath
         if isinstance(csvdata, str):
+            # data is a filepath
             dataset = []
-            with open(csvdata, 'rt') as csvfile:
+            with open(csvdata, "rt") as csvfile:
                 lines = csv.reader(csvfile)
 
                 for row in lines:
@@ -37,35 +75,68 @@ class BNdata:
             self.dataArray = csvD
             self.data = pd.DataFrame(data=csvD[1:], columns=csvD[0])
 
-        # else, if data is a list of lists
-        elif isinstance (csvdata, list):
+        elif isinstance(csvdata, list):
+            # data is a list of lists
             self.data = pd.DataFrame(csvdata, header=0)
             self.dataArray = csvdata
 
-        #print 'importing data from csv file completed'
+        # range discretization using equal or percentile binning
+        # binRanges will contain dict with bin ranges
+        self.binRanges = getBinRanges(
+            self.data, self.binTypeDict, self.numBinsDict
+        )
+        # range discretization using minimum length description method
 
-        ## range discretization using equal or percentile binning
-        binRanges = getBinRanges(self.data,self.binTypeDict, self.numBinsDict) #returns dict with bin ranges
-        self.binRanges = binRanges
-        ## range discretization using minimum length description method
+        # Binning data
+        self.binnedDict, self.binnedData, self.bincountsDict = discretize(
+            self.data, self.binRanges, True
+        )
 
-        #print 'binning data ...'
-        datadict, datadf, bincountsdict = discretize(self.data,self.binRanges,True)
-        #print 'binning data complete'
+    def loadFromCSV(self, header: bool = False) -> List:
+        """
+        Load data from a CSV file.
 
-        self.binnedDict, self.binnedData, self.bincountsDict =  datadict, datadf, bincountsdict
+        This function reads the specified CSV file and returns its contents in
+        a list. If the `header` parameter is set to True, the first row
+        (header) of the CSV file will be considered as column names.
 
-    def loadFromCSV (self, header=False):
+        Parameters
+        ----------
+        header : bool, optional
+            Whether the CSV has a header row. If True, the first row will be
+            treated as column names. Default is False.
+
+        Attributes Updated
+        ------------------
+        data : list
+            List of lists containing the data from the CSV file.
+
+        Returns
+        -------
+        list
+            List of lists containing the data from the CSV file. Each inner
+            list corresponds to a row in the CSV. If the `header` is set to
+            True, the first inner list will be column names.
+
+        Example
+        -------
+        >>> model = BNdata('path_to_file.csv', targetlist=..., binTypeDict=..., numBinsDict=...)
+        >>> data = model.loadFromCSV(header=True)
+        >>> print(data[0])  # This should print the column names if header=True
+        """
         # TODO #42: Refactor loadFromCSV to include k-fold code
         # (see also #43: Sort out the doubling up of the loadDataFromCSV function)
         dataset = []
-        with open(self.file, 'rb') as csvfile:
+        with open(self.file, "rb") as csvfile:
             lines = csv.reader(csvfile)
 
             for row in lines:
                 dataset.append(row)
+
         data = []
-        if (header == True): data.append(dataset[0])
+        if header:
+            data.append(dataset[0])
+
         for i in range(0, len(dataset)):
             row = []
             for j in range(0, len(dataset[i])):
@@ -75,33 +146,65 @@ class BNdata:
                     item = float(dataset[i][j])
                     row.append(item)
             data.append(row)
+
         self.data = data
 
-        return data
+        return self.data
 
-    # def getBinRanges (self, binTypeDict, numBinsDict):
-    #     trainingDfDiscterizedRanges = []
-    #     trainingDfDiscterizedRangesDict = {}
-    #
-    #     # loop through variables in trainingDf (columns) to discretize into ranges according to trainingDf
-    #     for varName in list(self.data):
-    #         # if true, discretise variable i, using percentiles, if false, discretise using equal bins
-    #         if binTypeDict[varName] == 'percentile':
-    #             trainingDfDiscterizedRanges.append(percentile_bins(self.data[varName], numBinsDict.get(varName)))  # adds to a list
-    #             trainingDfDiscterizedRangesDict[varName] = percentile_bins(self.data[varName], numBinsDict.get(varName))  # adds to a dictionary
-    #         elif 'equal':
-    #             trainingDfDiscterizedRanges.append(bins(max(self.data[varName]), min(self.data[varName]),numBinsDict.get(varName)))  # adds to a list
-    #             trainingDfDiscterizedRangesDict[varName] = bins(max(self.data[varName]), min(self.data[varName]),numBinsDict.get(varName))  # adds to a dictionary
-    #
-    #     # update class attribute, while you're at it
-    #     self.bin_ranges = trainingDfDiscterizedRangesDict
-    #
-    #     return trainingDfDiscterizedRangesDict
+    def discretize(
+        self, binRangesDict: dict, plot: bool = False
+    ) -> List[dict]:
+        """
+        Discretizes the data based on specified bin ranges.
 
-    def discretize (self, binRangesDict, plot=False):
+        This method takes the data from the instance attribute and bins it
+        using the bin ranges specified in the binRangesDict. Once the data has
+        been binned, the method updates the binnedData attribute of the
+        instance with a list of dictionaries where each dictionary corresponds
+        to a row in the discretized DataFrame.
+
+        Parameters
+        ----------
+        binRangesDict : dict
+            A dictionary specifying the bin ranges for each variable. The keys
+            of the dictionary correspond to variable names and the values are
+            lists of ranges (where each range is itself a list of two values:
+            the start and end of the range).
+
+        plot : bool, optional
+            If set to True, plots will be generated during the discretization
+            process. Default is False.
+
+            NOTE: Although the parameter exists in the method signature, its
+            current implementation does not generate any plots.
+
+        Attributes Updated
+        ------------------
+        binnedData : List[dict]
+            Updated with the discretized data.
+
+        Returns
+        -------
+        List[dict]
+            List of dictionaries where each dictionary corresponds to a row in
+            the discretized DataFrame.
+
+        Examples
+        --------
+        >>> model = BNdata('path_to_data.csv')
+        >>> bin_ranges = {
+        ...     "variable1": [[0, 10], [10, 20]],
+        ...     "variable2": [[0, 0.5], [0.5, 1]],
+        ... }
+        >>> discretized_data = model.discretize(bin_ranges)
+        """
+        # TODO: plot argument is not used, remove it?
+
         binnedDf = pd.DataFrame().reindex_like(self.data)
 
-        binCountsDict = copy.deepcopy(binRangesDict)  # copy trainingDfDiscterizedRangesDict
+        # copy trainingDfDiscterizedRangesDict
+        binCountsDict = copy.deepcopy(binRangesDict)
+
         for key in binCountsDict:
             for bin in binCountsDict[key]:
                 del bin[:]
@@ -112,32 +215,37 @@ class BNdata:
             discreteRanges = binRangesDict.get(varName)
 
             index = 0
-            for item1 in self.data[varName]:
+            for item in self.data[varName]:
                 for i in range(len(discreteRanges)):
                     binRange = discreteRanges[i]
 
-                    ############ bin training data #############
+                    # Bin training data
 
-                    if binRange[0] <= item1 <= binRange[1]:
-                        # print item1,' lies within ',binRange
+                    if binRange[0] <= item <= binRange[1]:
+                        # print (f"{item} lies within {binRange}")
                         binnedDf.iloc[index][varName] = i
                         binCountsDict[varName][i][0] += 1
 
-                    if i == 0 and binRange[0] > item1:
-                        # print 'the value ', item1, 'is smaller than the minimum bin', binRange[0]
+                    if i == 0 and binRange[0] > item:
+                        # print(f"the value {item} is smaller than the \
+                        #     minimum bin {binRange[0]}")
                         binnedDf.iloc[index][varName] = i
                         binCountsDict[varName][i][0] += 1
 
-                    if i == len(discreteRanges) - 1 and binRange[1] < item1:
-                        # print 'the value ', item1, 'is larger than the maximum bin', binRange[1]
+                    if i == len(discreteRanges) - 1 and binRange[1] < item:
+                        # print(f"the value {item} is larger than the \
+                        #     maximum bin {binRange[1]}")
                         binnedDf.iloc[index][varName] = i
                         binCountsDict[varName][i][0] += 1
 
                 index += 1
 
-        binnedData = binnedDf.to_dict(orient='records') # a list of dictionaries
-        self.binnedData = binnedData
+        # a list of dictionaries
+        self.binnedData = binnedDf.to_dict(orient="records")
 
-        print ('train binCountdict ', binCountsDict)
-        print ('binned_trainingData ', binnedData)
-        return binnedData, binnedDf
+        if self.verbose:
+            # debug messages
+            print(f"train binCountdict: {binCountsDict}")
+            print(f"binned_trainingData: {self.binnedData}")
+
+        return self.binnedData

@@ -8,8 +8,13 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             - uses: actions/setup-python@v3
+            - uses: nikeee/setup-pandoc@v1
             - name: "Install dependencies"
               run: pip install -r requirements.txt
+            - name: "Install ipython and ipykernel"
+              run: pip install --upgrade pip ipython ipykernel
+            - name: "Set up kernel"
+              run: ipython kernel install --name "python3" --user
             - name: "Sphinx link check"
               run: sphinx-build docs -W -b linkcheck -d docs/_build/doctrees docs/_build/html
             - name: "Sphinx build"
