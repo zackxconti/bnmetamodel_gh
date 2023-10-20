@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bnmetamodel_gh.Helper_functions module &mdash; bnmetamodel_gh 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="bnmetamodel_gh.BNdata module" href="BNdata.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            bnmetamodel_gh
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="BayesianNetwork.html"><code class="docutils literal notranslate"><span class="pre">bnmetamodel_gh.BayesianNetwork</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BN_Metamodel_easy.html"><code class="docutils literal notranslate"><span class="pre">bnmetamodel_gh.BN_Metamodel_easy</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BNdata.html"><code class="docutils literal notranslate"><span class="pre">bnmetamodel_gh.BNdata</span></code> module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">bnmetamodel_gh.Helper_functions</span></code> module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bnmetamodel_gh.Helper_functions.BNskelFromCSVpybbn"><code class="docutils literal notranslate"><span class="pre">BNskelFromCSVpybbn()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bnmetamodel_gh.Helper_functions.bins"><code class="docutils literal notranslate"><span class="pre">bins()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bnmetamodel_gh.Helper_functions.discretize"><code class="docutils literal notranslate"><span class="pre">discretize()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bnmetamodel_gh.Helper_functions.distribution_distance_error"><code class="docutils literal notranslate"><span class="pre">distribution_distance_error()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bnmetamodel_gh.Helper_functions.generateErrors"><code class="docutils literal notranslate"><span class="pre">generateErrors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bnmetamodel_gh.Helper_functions.getBinRanges"><code class="docutils literal notranslate"><span class="pre">getBinRanges()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bnmetamodel_gh.Helper_functions.kfoldToDF"><code class="docutils literal notranslate"><span class="pre">kfoldToDF()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bnmetamodel_gh.Helper_functions.loadDataFromCSV"><code class="docutils literal notranslate"><span class="pre">loadDataFromCSV()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bnmetamodel_gh.Helper_functions.percentile_bins"><code class="docutils literal notranslate"><span class="pre">percentile_bins()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bnmetamodel_gh.Helper_functions.printdist"><code class="docutils literal notranslate"><span class="pre">printdist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bnmetamodel_gh.Helper_functions.without_keys"><code class="docutils literal notranslate"><span class="pre">without_keys()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">bnmetamodel_gh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Documentation</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">bnmetamodel_gh.Helper_functions</span></code> module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/Helper_functions.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-bnmetamodel_gh.Helper_functions">
+<span id="bnmetamodel-gh-helper-functions-module"></span><h1><code class="docutils literal notranslate"><span class="pre">bnmetamodel_gh.Helper_functions</span></code> module<a class="headerlink" href="#module-bnmetamodel_gh.Helper_functions" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="bnmetamodel_gh.Helper_functions.BNskelFromCSVpybbn">
+<span class="sig-prename descclassname"><span class="pre">bnmetamodel_gh.Helper_functions.</span></span><span class="sig-name descname"><span class="pre">BNskelFromCSVpybbn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csvdata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#bnmetamodel_gh.Helper_functions.BNskelFromCSVpybbn" title="Link to this definition"></a></dt>
+<dd><p>Create a Bayesian Network structure from a CSV file or data.</p>
+<p>This function constructs a Bayesian Network structure based on the columns
+present in a CSV file or data. Columns not specified as targets are treated
+as input vertices. The structure is a dictionary where keys are the vertex
+names and the values are lists of connected vertices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>csvdata</strong> (<em>str</em><em> or </em><em>list</em>) – If a string, it is treated as the filepath to a CSV file. The CSV
+should have its first row as headers, which are taken as vertex names
+for the Bayesian Network. If a list, the first element should be a list
+of headers (vertex names).</p></li>
+<li><p><strong>targets</strong> (<em>list</em><em> of </em><em>str</em>) – A list of strings specifying which columns in the CSV data should be
+considered as target vertices. All other columns are treated as input
+vertices.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary representing the structure of the Bayesian Network. The
+dictionary has vertex names as keys, and the values are lists
+containing names of connected vertices.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Edges (connections) are formed between all input vertices and target
+vertices. The direction of edges (who points to who) depends on the
+number of inputs vs. targets.</p></li>
+</ul>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">BNskelFromCSVpybbn</span><span class="p">(</span><span class="s2">&quot;data.csv&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;TargetA&quot;</span><span class="p">,</span> <span class="s2">&quot;TargetB&quot;</span><span class="p">])</span>
+<span class="go"># This will create a Bayesian Network structure using columns in &quot;data.csv&quot;</span>
+<span class="go"># with &quot;TargetA&quot; and &quot;TargetB&quot; as target vertices. The output will be a</span>
+<span class="go"># dictionary representing the structure.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bnmetamodel_gh.Helper_functions.bins">
+<span class="sig-prename descclassname"><span class="pre">bnmetamodel_gh.Helper_functions.</span></span><span class="sig-name descname"><span class="pre">bins</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numBins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#bnmetamodel_gh.Helper_functions.bins" title="Link to this definition"></a></dt>
+<dd><p>Create a list of bin ranges from <cite>max</cite> to <cite>min</cite> with <cite>numBins</cite> bins.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max</strong> (<em>float</em>) – The maximum value of the range.</p></li>
+<li><p><strong>min</strong> (<em>float</em>) – The minimum value of the range.</p></li>
+<li><p><strong>numBins</strong> (<em>int</em>) – The number of bins.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of bin ranges from <cite>max</cite> to <cite>min</cite> with <cite>numBins</cite> bins.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[list[float, float]]</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bins</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="go">[[0.0, 2.0], [2.0, 4.0], [4.0, 6.0], [6.0, 8.0], [8.0, 10.0]]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bins</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="go">[[2.0, 4.0], [4.0, 6.0], [6.0, 8.0]]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bins</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">[[3.0, 5.0]]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bnmetamodel_gh.Helper_functions.discretize">
+<span class="sig-prename descclassname"><span class="pre">bnmetamodel_gh.Helper_functions.</span></span><span class="sig-name descname"><span class="pre">discretize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binRangesDict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#bnmetamodel_gh.Helper_functions.discretize" title="Link to this definition"></a></dt>
+<dd><p>Discretize the data in a dataframe based on given bin ranges and count
+occurrences within each bin.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataframe</strong> (<em>pandas.DataFrame</em>) – The dataframe containing the continuous data to be discretized.</p></li>
+<li><p><strong>binRangesDict</strong> (<em>dict</em>) – A dictionary where keys are column names from the dataframe, and the
+values are lists of lists representing bin ranges. Each list consists
+of two elements: a lower and upper limit for the bin.</p></li>
+<li><p><strong>plot</strong> (<em>bool</em><em>, </em><em>optional</em>) – A flag to indicate if any plots should be produced during the
+discretization process (default is False). Note: This argument is
+accepted but not utilized in the provided function code.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>binnedData</strong> (<em>list of dict</em>) – A list where each element is a dictionary. The keys are column names,
+and the values represent the bin indices where each data point belongs.</p></li>
+<li><p><strong>binnedDf</strong> (<em>pandas.DataFrame</em>) – A dataframe where each data point in the original dataframe is replaced
+with its corresponding bin index.</p></li>
+<li><p><strong>binCountsDict</strong> (<em>dict</em>) – A dictionary where keys are column names from the dataframe. The values
+are lists of lists, where each inner list contains a single integer
+representing the number of data points that fall within the
+corresponding bin.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">35</span><span class="p">],</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">80</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bins</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">]],</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="mi">40</span><span class="p">,</span> <span class="mi">60</span><span class="p">],</span> <span class="p">[</span><span class="mi">60</span><span class="p">,</span> <span class="mi">80</span><span class="p">]]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">binnedData</span><span class="p">,</span> <span class="n">binnedDf</span><span class="p">,</span> <span class="n">counts</span> <span class="o">=</span> <span class="n">discretize</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For values outside the defined bins, they are placed into the nearest edge
+bin.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bnmetamodel_gh.Helper_functions.distribution_distance_error">
+<span class="sig-prename descclassname"><span class="pre">bnmetamodel_gh.Helper_functions.</span></span><span class="sig-name descname"><span class="pre">distribution_distance_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">correct_bin_locations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predicted_bin_probabilities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bin_ranges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#bnmetamodel_gh.Helper_functions.distribution_distance_error" title="Link to this definition"></a></dt>
+<dd><p>Compute the distance error between the mean of the bin with the highest
+predicted probability and the actual values. The distance error can be
+normalized with the range of bin values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>correct_bin_locations</strong> (<em>list</em><em> of </em><em>int</em>) – A list of indices indicating the correct bin locations for each actual
+value.</p></li>
+<li><p><strong>predicted_bin_probabilities</strong> (<em>list</em><em> of </em><em>list</em><em> of </em><em>float</em>) – A 2D list where each inner list represents the predicted probabilities
+of an item being in each bin.</p></li>
+<li><p><strong>actual_values</strong> (<em>list</em><em> of </em><em>float</em>) – A list of actual values for which the distance error needs to be
+computed.</p></li>
+<li><p><strong>bin_ranges</strong> (<em>list</em><em> of </em><em>tuple</em><em> of </em><em>float</em>) – A list where each tuple represents the minimum and maximum value for
+each bin.</p></li>
+<li><p><strong>plot</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, a histogram of normalized distance errors is plotted. Default
+is False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>A list of normalized distance errors for each actual value.</p>
+<p>If plot is True, a histogram of normalized distance errors is also
+plotted.</p>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of float</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">correct_bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">predicted_probs</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">actual_vals</span> <span class="o">=</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">35</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bins</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">distribution_distance_error</span><span class="p">(</span><span class="n">correct_bins</span><span class="p">,</span> <span class="n">predicted_probs</span><span class="p">,</span> <span class="n">actual_vals</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span>
+<span class="go">[5.0, 5.0]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bnmetamodel_gh.Helper_functions.generateErrors">
+<span class="sig-prename descclassname"><span class="pre">bnmetamodel_gh.Helper_functions.</span></span><span class="sig-name descname"><span class="pre">generateErrors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictedTargetPosteriors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">testingData</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binnedTestingData</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binRanges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#bnmetamodel_gh.Helper_functions.generateErrors" title="Link to this definition"></a></dt>
+<dd><p>Compute error metrics between predicted target posteriors and actual target
+values.</p>
+<p>This function calculates the RMSE, log loss, distribution distance error,
+and the probabilities associated with the correct bins of actual target
+values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>predictedTargetPosteriors</strong> (<em>list</em><em> of </em><em>list</em><em> of </em><em>float</em>) – The predicted posterior probabilities for each target value. Each inner
+list contains the posterior probabilities for the target’s bins.</p></li>
+<li><p><strong>testingData</strong> (<em>pd.DataFrame</em>) – The DataFrame containing the actual target values.</p></li>
+<li><p><strong>binnedTestingData</strong> (<em>pd.DataFrame</em>) – The DataFrame containing the binned actual target values. The binning
+corresponds to the binRanges.</p></li>
+<li><p><strong>binRanges</strong> (<em>dict</em>) – A dictionary mapping target names to their respective bin ranges.</p></li>
+<li><p><strong>target</strong> (<em>str</em>) – The name of the target variable for which the errors are to be
+computed.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>RMSE (float): Root mean square error between the expected values of
+the predicted posteriors and the actual target values.</p></li>
+<li><p>Log Loss (float): Logarithmic loss between the binned actual target
+values and the predicted posteriors.</p></li>
+<li><p>Distribution Distance Errors (list of float): Distribution distance
+errors between the predicted and actual distributions for each target
+value.</p></li>
+<li><p>Correct Bin Probabilities (list of float): Probabilities associated
+with the correct bins for each actual target value.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">predicted</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">testingData</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">binnedTestingData</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">binRanges</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">generateErrors</span><span class="p">(</span><span class="n">predicted</span><span class="p">,</span> <span class="n">testingData</span><span class="p">,</span> <span class="n">binnedTestingData</span><span class="p">,</span> <span class="n">binRanges</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">)</span>
+<span class="go"># This will return RMSE, log loss, distribution distance errors, and</span>
+<span class="go"># correct bin probabilities for the &#39;target&#39; variable.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bnmetamodel_gh.Helper_functions.getBinRanges">
+<span class="sig-prename descclassname"><span class="pre">bnmetamodel_gh.Helper_functions.</span></span><span class="sig-name descname"><span class="pre">getBinRanges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binTypeDict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numBinsDict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#bnmetamodel_gh.Helper_functions.getBinRanges" title="Link to this definition"></a></dt>
+<dd><p>Discretize DataFrame columns into specified bin ranges.</p>
+<p>This function processes the provided DataFrame columns, discretizing them
+into bin ranges as specified by the given dictionaries <cite>binTypeDict</cite> and
+<cite>numBinsDict</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataframe</strong> (<em>pd.DataFrame</em>) – The input DataFrame that contains the data to be discretized.</p></li>
+<li><p><strong>binTypeDict</strong> (<em>dict</em>) – A dictionary mapping from column names (variables) of the DataFrame to
+bin types. Currently supported bin types are:
+- ‘p’: Percentile-based bins.
+- ‘e’: Equal-width bins.</p></li>
+<li><p><strong>numBinsDict</strong> (<em>dict</em>) – A dictionary mapping from column names (variables) of the DataFrame to
+the number of bins required for that column.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary with column names (variables) as keys. The corresponding
+values are lists containing the computed bin ranges for each variable.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The function currently assumes that each column of the DataFrame
+corresponds to a Bayesian Network (BN) node.</p></li>
+</ul>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">binTypeDict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="s1">&#39;p&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="s1">&#39;e&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">numBinsDict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">getBinRanges</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">binTypeDict</span><span class="p">,</span> <span class="n">numBinsDict</span><span class="p">)</span>
+<span class="go"># This will return a dictionary with bin ranges for columns &#39;A&#39; and &#39;B&#39;</span>
+<span class="go"># based on the specified bin types and number of bins.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bnmetamodel_gh.Helper_functions.kfoldToDF">
+<span class="sig-prename descclassname"><span class="pre">bnmetamodel_gh.Helper_functions.</span></span><span class="sig-name descname"><span class="pre">kfoldToDF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indexList</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#bnmetamodel_gh.Helper_functions.kfoldToDF" title="Link to this definition"></a></dt>
+<dd><p>Extract rows from the input dataframe based on provided indices and return
+as a new dataframe.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>indexList</strong> (<em>list</em><em> of </em><em>int</em>) – A list of indices pointing to rows in <cite>dataframe</cite> that should be
+extracted.</p></li>
+<li><p><strong>dataframe</strong> (<em>pandas.DataFrame</em>) – The source dataframe from which rows will be extracted.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dataframe containing rows from <cite>dataframe</cite> as indicated by
+<cite>indexList</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bnmetamodel_gh.Helper_functions.loadDataFromCSV">
+<span class="sig-prename descclassname"><span class="pre">bnmetamodel_gh.Helper_functions.</span></span><span class="sig-name descname"><span class="pre">loadDataFromCSV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csv_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#bnmetamodel_gh.Helper_functions.loadDataFromCSV" title="Link to this definition"></a></dt>
+<dd><p>Load data from a csv file at <cite>csv_file_path</cite>. The csv file must be
+formatted such that the first row contains the column names if header is
+True, and the first row contains data if header is False.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>csv_file_path</strong> (<em>str</em>) – The path to the csv file.</p></li>
+<li><p><strong>header</strong> (<em>bool</em>) – Whether the csv file contains a header row.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The data from the csv file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of any data types</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bnmetamodel_gh.Helper_functions.percentile_bins">
+<span class="sig-prename descclassname"><span class="pre">bnmetamodel_gh.Helper_functions.</span></span><span class="sig-name descname"><span class="pre">percentile_bins</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numBins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#bnmetamodel_gh.Helper_functions.percentile_bins" title="Link to this definition"></a></dt>
+<dd><p>Create a list of percentile bin ranges from <cite>max</cite> to <cite>min</cite> with <cite>numBins</cite>
+bins.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>array</strong> (<em>list</em>) – The array to be binned.</p></li>
+<li><p><strong>numBins</strong> (<em>int</em>) – The number of bins.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of percentile bin ranges from <cite>max</cite> to <cite>min</cite> with <cite>numBins</cite>
+bins.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[list[float, float]]</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">101</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">percentile_bins</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="go">[[1.0, 25.75], [25.75, 50.5], [50.5, 75.25], [75.25, 100.0]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">percentile_bins</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="go">[[1.0, 20.8], [20.8, 40.6], [40.6, 60.4], [60.4, 80.2], [80.2, 100.0]]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bnmetamodel_gh.Helper_functions.printdist">
+<span class="sig-prename descclassname"><span class="pre">bnmetamodel_gh.Helper_functions.</span></span><span class="sig-name descname"><span class="pre">printdist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#bnmetamodel_gh.Helper_functions.printdist" title="Link to this definition"></a></dt>
+<dd><p>Get the distribution of the node in <cite>bn</cite> with the name <cite>jd</cite>. If
+<cite>normalize</cite> is True, the distribution will be normalized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>jd</strong> (<em>str</em>) – The name of the node.</p></li>
+<li><p><strong>bn</strong> (<em>DiscreteBayesianNetwork  # TODO: Correct type?</em>) – The Bayesian network.</p></li>
+<li><p><strong>normalize</strong> (<em>bool</em>) – Whether to normalize the distribution.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The distribution of the node in <cite>bn</cite> with the name <cite>jd</cite>. If
+<cite>normalize</cite> is True, the distribution will be normalized.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bnmetamodel_gh.Helper_functions.without_keys">
+<span class="sig-prename descclassname"><span class="pre">bnmetamodel_gh.Helper_functions.</span></span><span class="sig-name descname"><span class="pre">without_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#bnmetamodel_gh.Helper_functions.without_keys" title="Link to this definition"></a></dt>
+<dd><p>Return a copy of dict <cite>d</cite> without the keys in <cite>keys</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dic</strong> (<em>dict</em>) – The dict to be copied.</p></li>
+<li><p><strong>keys</strong> (<em>list</em>) – The keys to be removed.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A copy of dict <cite>d</cite> without the keys in <cite>keys</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="BNdata.html" class="btn btn-neutral float-left" title="bnmetamodel_gh.BNdata module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Zack Xuereb Conti.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

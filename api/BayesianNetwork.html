@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bnmetamodel_gh.BayesianNetwork module &mdash; bnmetamodel_gh 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="bnmetamodel_gh.BN_Metamodel_easy module" href="BN_Metamodel_easy.html" />
+    <link rel="prev" title="API Documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            bnmetamodel_gh
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">bnmetamodel_gh.BayesianNetwork</span></code> module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bnmetamodel_gh.BayesianNetwork.BayesianNetwork"><code class="docutils literal notranslate"><span class="pre">BayesianNetwork</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bnmetamodel_gh.BayesianNetwork.BayesianNetwork.convertEvidence"><code class="docutils literal notranslate"><span class="pre">BayesianNetwork.convertEvidence()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bnmetamodel_gh.BayesianNetwork.BayesianNetwork.crossValidate_JT"><code class="docutils literal notranslate"><span class="pre">BayesianNetwork.crossValidate_JT()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bnmetamodel_gh.BayesianNetwork.BayesianNetwork.getpriors"><code class="docutils literal notranslate"><span class="pre">BayesianNetwork.getpriors()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bnmetamodel_gh.BayesianNetwork.BayesianNetwork.inferPD_JT_hard"><code class="docutils literal notranslate"><span class="pre">BayesianNetwork.inferPD_JT_hard()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bnmetamodel_gh.BayesianNetwork.BayesianNetwork.inferPD_JT_soft"><code class="docutils literal notranslate"><span class="pre">BayesianNetwork.inferPD_JT_soft()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bnmetamodel_gh.BayesianNetwork.BayesianNetwork.plotPDs"><code class="docutils literal notranslate"><span class="pre">BayesianNetwork.plotPDs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bnmetamodel_gh.BayesianNetwork.BayesianNetwork.validateNew"><code class="docutils literal notranslate"><span class="pre">BayesianNetwork.validateNew()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="BN_Metamodel_easy.html"><code class="docutils literal notranslate"><span class="pre">bnmetamodel_gh.BN_Metamodel_easy</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BNdata.html"><code class="docutils literal notranslate"><span class="pre">bnmetamodel_gh.BNdata</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Helper_functions.html"><code class="docutils literal notranslate"><span class="pre">bnmetamodel_gh.Helper_functions</span></code> module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">bnmetamodel_gh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Documentation</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">bnmetamodel_gh.BayesianNetwork</span></code> module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/BayesianNetwork.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-bnmetamodel_gh.BayesianNetwork">
+<span id="bnmetamodel-gh-bayesiannetwork-module"></span><h1><code class="docutils literal notranslate"><span class="pre">bnmetamodel_gh.BayesianNetwork</span></code> module<a class="headerlink" href="#module-bnmetamodel_gh.BayesianNetwork" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="bnmetamodel_gh.BayesianNetwork.BayesianNetwork">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bnmetamodel_gh.BayesianNetwork.</span></span><span class="sig-name descname"><span class="pre">BayesianNetwork</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">BNdata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="BNdata.html#bnmetamodel_gh.BNdata.BNdata" title="bnmetamodel_gh.BNdata.BNdata"><span class="pre">BNdata</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">netStructure</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modeldata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetlist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binranges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bnmetamodel_gh.BayesianNetwork.BayesianNetwork" title="Link to this definition"></a></dt>
+<dd><p>A class used to represent a Bayesian Network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>BNdata</strong> (<a class="reference internal" href="BNdata.html#bnmetamodel_gh.BNdata.BNdata" title="bnmetamodel_gh.BNdata.BNdata"><em>BNdata</em></a><em>, </em><em>optional</em>) – The BNdata object containing the data to be used to build the
+Bayesian Network, by default None.</p></li>
+<li><p><strong>netStructure</strong> (<em>dict</em><em>, </em><em>optional</em>) – The structure of the Bayesian Network. A dictionary where keys are
+names of children and values are list of parent names.</p></li>
+<li><p><strong>modeldata</strong> (<em>dict</em><em>, </em><em>optional</em>) – The model data of the Bayesian Network, by default None.</p></li>
+<li><p><strong>targetlist</strong> (<em>list</em><em>, </em><em>optional</em>) – The list of targets of the Bayesian Network, by default None.</p></li>
+<li><p><strong>binranges</strong> (<em>_type_</em><em>, </em><em>optional</em>) – The bin ranges of the Bayesian Network, by default None.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to print the progress of the learning process, by default
+False.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="bnmetamodel_gh.BayesianNetwork.BayesianNetwork.convertEvidence">
+<span class="sig-name descname"><span class="pre">convertEvidence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">humanEvidence</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bnmetamodel_gh.BayesianNetwork.BayesianNetwork.convertEvidence" title="Link to this definition"></a></dt>
+<dd><p>Converts human evidence to libpgm evidence.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>humanEvidence</strong> (<em>dict</em>) – <p>Human evidence in the form of a dictionary, structured either as
+ranges of interest or hard numbers.</p>
+<p>Example of a range of interest (min, max values in a list):</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;v1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;v2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Example of hard numbers as values:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;v1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">10</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;v2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">30</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p># TODO</p>
+<p>Example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;v1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;v2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">],</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bnmetamodel_gh.BayesianNetwork.BayesianNetwork.crossValidate_JT">
+<span class="sig-name descname"><span class="pre">crossValidate_JT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">targetList</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numFolds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#bnmetamodel_gh.BayesianNetwork.BayesianNetwork.crossValidate_JT" title="Link to this definition"></a></dt>
+<dd><p>Cross-validates the BN using the Junction Tree algorithm.
+Returns a list of error dataframes, one for each target.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>targetList</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of target variables as strings.</p></li>
+<li><p><strong>numFolds</strong> (<em>int</em>) – Number of folds for cross-validation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary of error dataframes, one for each target.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bnmetamodel_gh.BayesianNetwork.BayesianNetwork.getpriors">
+<span class="sig-name descname"><span class="pre">getpriors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#bnmetamodel_gh.BayesianNetwork.BayesianNetwork.getpriors" title="Link to this definition"></a></dt>
+<dd><p>Get the priors of the Bayesian Network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The priors of the Bayesian Network.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bnmetamodel_gh.BayesianNetwork.BayesianNetwork.inferPD_JT_hard">
+<span class="sig-name descname"><span class="pre">inferPD_JT_hard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hardEvidence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#bnmetamodel_gh.BayesianNetwork.BayesianNetwork.inferPD_JT_hard" title="Link to this definition"></a></dt>
+<dd><p>Method to perform inference with hard evidence using join tree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>hardEvidence</strong> (<em>dict</em>) – Hard evidence in the form of a dictionary:
+<code class="docutils literal notranslate"><span class="pre">{'max_def':</span> <span class="pre">5,</span> <span class="pre">'span':</span> <span class="pre">4}</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Posterior distributions in the form of a dictionary of dataframes.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bnmetamodel_gh.BayesianNetwork.BayesianNetwork.inferPD_JT_soft">
+<span class="sig-name descname"><span class="pre">inferPD_JT_soft</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">softEvidence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#bnmetamodel_gh.BayesianNetwork.BayesianNetwork.inferPD_JT_soft" title="Link to this definition"></a></dt>
+<dd><p>Method to perform inference with soft evidence (virtual) using join
+tree only.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>softEvidence</strong> (<em>dict</em>) – Soft evidence in the form of a dictionary:
+<code class="docutils literal notranslate"><span class="pre">{'max_def':</span> <span class="pre">[0.0,</span> <span class="pre">0.0,</span> <span class="pre">0.0,</span> <span class="pre">0.0,</span> <span class="pre">0.0,</span> <span class="pre">0.0]}</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Posterior distributions in the form of a dictionary of dataframes.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bnmetamodel_gh.BayesianNetwork.BayesianNetwork.plotPDs">
+<span class="sig-name descname"><span class="pre">plotPDs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maintitle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displayplt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#bnmetamodel_gh.BayesianNetwork.BayesianNetwork.plotPDs" title="Link to this definition"></a></dt>
+<dd><p>Plots the probability distributions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>maintitle</strong> (<em>str</em>) – The title for the figure.</p></li>
+<li><p><strong>xlabel</strong> (<em>str</em>) – The label for the x-axis.</p></li>
+<li><p><strong>ylabel</strong> (<em>str</em>) – The label for the y-axis.</p></li>
+<li><p><strong>displayplt</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to display the plot, by default False.</p></li>
+<li><p><strong>**kwargs</strong> – Keyword arguments. If “evidence” is passed, then …. If
+“posteriorPD” is passed, then ….</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The probability distributions are displayed as a plot.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bnmetamodel_gh.BayesianNetwork.BayesianNetwork.validateNew">
+<span class="sig-name descname"><span class="pre">validateNew</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">newBNData</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="BNdata.html#bnmetamodel_gh.BNdata.BNdata" title="bnmetamodel_gh.BNdata.BNdata"><span class="pre">BNdata</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetList</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#bnmetamodel_gh.BayesianNetwork.BayesianNetwork.validateNew" title="Link to this definition"></a></dt>
+<dd><p>Validates the BN using the Junction Tree algorithm.
+returns a list of error dataframes, one for each target</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>newBNData</strong> (<em>BNData</em>) – The new BN data.</p></li>
+<li><p><strong>targetList</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of target variables.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary of error dataframes, one for each target.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="API Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="BN_Metamodel_easy.html" class="btn btn-neutral float-right" title="bnmetamodel_gh.BN_Metamodel_easy module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Zack Xuereb Conti.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
