@@ -667,12 +667,13 @@ class BayesianNetwork:
             numbins = len(self.BinRanges[posterior[0]])
 
             for i in range(0, numbins):
-                if float(i) not in posterior[1]["val"].tolist():  # if
+                if float(i) not in posterior[1]["val"].astype(float).tolist():  # if
                     # print 'bin number ', float(i) ,' was missing '
                     posterior[1].loc[len(posterior[1])] = [float(i), 0.0]
                     continue
 
         print ('posteriors \n ', posteriors)
+
 
         posteriorsDict = pybbnToLibpgm_posteriors(posteriors)
         if self.verbose:
