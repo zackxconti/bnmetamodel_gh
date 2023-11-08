@@ -780,7 +780,7 @@ def pybbnToLibpgm_posteriors(
 
     for node in pybbnPosteriors:
         var = node[0]
-        df = node[1]
+        df = node[1].apply(pd.to_numeric)
         p = df.sort_values(by=["val"])
         posteriors[var] = p["p"].tolist()
 
